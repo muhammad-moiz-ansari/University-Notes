@@ -1,0 +1,64 @@
+void mergeSort(int arr[], int low, int high) {
+        int mid = (high + low) / 2;
+        mergeSort(arr, low, mid);
+        mergeSort(arr, mid + 1, high);
+        merge(arr, low, mid, high);\
+}
+
+void merge(int arr[], int low, int mid, int high) {
+    int *temp = new int[high - low + 1];
+    for (int i = low; i <= high; i++) {
+        temp[i - low] = arr[i];
+    }
+    int i = low, j = mid + 1, k = 0;
+    while (i <= mid && j <= high) {
+        if (temp[i - low] <= temp[j - low]) {
+            arr[k++] = temp[i - low];
+            i++;
+        } else {
+            arr[k++] = temp[j - low];
+            j++;
+        }
+    }
+    while (i <= mid) {
+        arr[k++] = temp[i - low];
+        i++;
+    }
+    delete[] temp;
+}
+
+int main() {
+    int arr[] = {5, 3, 1, 4, 2};
+    cout << "Original array: ";
+    for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++) {
+        cout << arr[i] << " ";
+    }
+    mergeSort(arr, 0, sizeof(arr) / sizeof(arr[0]) - 1);
+    cout << "\nSorted array: ";
+    for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++) {
+        cout << arr[i] << " ";
+    }
+    return 0;
+}
+
+--------------------------------------------------------------------
+
+int a=1;
+
+int b;
+
+b = ++a * ++a;
+
+cout<<a: "<<a<<", b: "<<b; cout<<endl;
+
+a=1; b = a++ * a++;
+
+cout<<"a: "<<a<<", b: "<<b; cout<<endl;
+
+a=1; b = ++a * a++;
+
+Cout<<"a: "<<a<<", b: "<<b; cout<<endl;
+
+a=1; b = a++ * ++a;
+
+cout<<"a: "<<a<<", b: "<<b; cout<<endl;

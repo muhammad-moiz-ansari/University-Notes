@@ -1,0 +1,101 @@
+//write a program to find armstrong Number. divide your program in meaningful functions
+#include <iostream>
+using namespace std;
+int power(int b,int p=0);
+int length(int N);
+bool isArmstrongNumber(int N);
+int sum(int firstOperand , int secondOperand);
+int main()
+{/*
+    cout<<"Is "<<371<<" an Armstrong Number "<<endl;
+    cout<<"Ans: "<<isArmstrongNumber(371)<<endl;
+    
+    int n;
+    cout<<"Enter a number "; cin>>n;
+    cout<<"Is "<<n<<" an Armstrong Number "<<endl;
+    cout<<"Ans: "<<isArmstrongNumber(n);*/
+    for(int i=1;i<9999999;i++)
+    {
+        if(isArmstrongNumber(i))
+            cout<<i<<" is an Armstrong Number." <<endl;
+    }
+    return 0;
+}
+int power(int b,int p)
+{
+    int result=1,count=1;
+    while(count++<=p)
+        result*=b;
+    
+    
+    return result;
+}
+int length(int N)
+{
+    int l=0;
+    if(N>0 && N<9)
+        return 1;
+    
+    while(N!=0)
+    {
+        l+=1;
+        N/=10;
+        
+    }
+    return l;
+}
+int sum(int firstOperand , int secondOperand)
+{
+     return firstOperand + secondOperand;
+}
+bool isArmstrongNumber(int N)
+{
+    
+    int l=length(N),s=0,tempN=N;
+    
+    for(int i=0;i<l;i++,tempN/=10)
+        {
+            
+            s= sum(s, power(tempN%10,l));
+            
+        }
+   
+    return  (N==s)? true : false;
+}
+
+
+-----------------------------------------------------
+
+//--------------------Dry-Run 1--------------------//
+
+#include<iostream>
+using namespace std;
+int x;
+
+void fun1(){
+  int x=7;
+  static int y=10;
+  x++;
+  y++;
+  cout<<y<<"  "<<::x<<endl;
+  }
+  void fun2(){
+    int x=27;
+  int y=20;
+  ::x++; x++;
+  y++;
+  cout<<x<<"  "<<y<<"  "<<::x<<endl;
+  }
+int main() {
+  fun1();
+  fun2();
+  fun1();
+  fun2();
+  
+  return 0;
+}
+
+-----------------------------------------------------
+
+//--------------------Dry-Run 2--------------------//
+

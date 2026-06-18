@@ -1,0 +1,324 @@
+﻿Q3: In this question your goal is to write code for solving magic square using 2-D array. Your program should ask the user for the dimension of magic square and then solve the magic square for given dimension. You must do the proper allocation and deallocation of the memory.
+link:
+https://en.wikipedia.org/wiki/Magic_square
+
+
+Q:
+Write a program to delete all vowels from a string. Assume that the sentence is not more than 80 characters long.
+Take the string from a user using cin.getline function. Your program must work for any input string (given by a user) and not only for the example given below.
+Example
+Input String
+‘T’‘h’‘i’‘s’‘i’'s’‘a’ ‘n’ ' '‘e’‘x’ ‘a’ ‘m’ ‘p’‘l’ ‘e’ ‘\0’
+After processing the string should become
+‘T’ ‘h’ ' ' ‘s’ ' ' ' ' ‘s’ ' ' ‘n’ ' ' ' '‘x’ ' ' ‘m’ 'p' 'l' ' ' ‘\0’
+Notes:
+1.You are not being asked to print an input string without vowels. You must follow some steps to
+remove all vowels from an input string. Zero marks will be awarded if you only print the screen
+without vowels.
+2.The vowel characters are a,e,i,o,u and A,E,I,O,U
+
+Q:
+Write a program with a function countZeroes(n) which takes as input a pointer to a positive int n and outputs the number of zeroes in n. 
+For example: countZeroes(10) is 1, countZeroes(50803) is 2, and countZeroes(547) is 0
+
+Q4:
+void compDouble(int* Ar)
+{ 	for(int i=0;i<10;i++)
+		{	*Ar=(*Ar)*2;
+			 Ar++;
+		}
+}
+void main()
+{		int Arr[10]={0,1,2,3,4,5,6,7,8,9};
+		compDouble(Arr);
+		for(int i=0;i<10;i++)
+			cout<<Arr[i]<<endl;
+}
+
+Q5: 
+// Copying string using Pointers
+
+char* str1 = "Self-conquest is the greatest victory.";
+char str2[80]; //empty string
+char* src = str1;
+char* dest = str2;
+
+while( *src ) //until null character,
+		*dest++ = *src++; //copy chars from src to dest
+	
+*dest = '\0'; //terminate dest
+
+cout << str2 << endl; //display str2
+
+Q6:
+#include<iostream>
+#include <stdlib.h>
+#include<time.h>
+using namespace std;
+int main()
+{
+   int M=4; int N=5;
+   int* Arr=new int[M*N];
+   srand(time(0));
+
+   //set values
+   for(int i=0;i<M;i++)
+	for(int j=0;j<N;j++) 
+		*(Arr + i*M+j) = rand()%100;
+          
+   //display values
+   for(int i=0;i<M;i++) {
+       for(int j=0;j<N;j++) {
+           cout<<*(Arr + i*M+j)<<"   ";  
+           //cout<<(Arr+i*M)[j]<<"   ";
+       }
+     cout<<endl;
+    }
+    delete[] Arr;
+   return 0; }
+
+
+Q7: Write a program that takes 5 integer arrays(of variable size) as input . You have to ensure that user enter these arrays in ascending order, if user enters incorrectly display a prompt to “Read input in correct format” and input again. Write a C++ program to produce an array that merges elements of all arrays in descending order, but it also needs to remove duplicates.
+Example 01:
+Array A1: {1, 5, 6}
+Array A2: {1, 2, 4, 8}
+Array A3: {5, 6, 7, 8}
+Array A4: {23, 24, 94, 100, 105, 115}
+Array A5: {1, 2, 5, 6, 8, 24, 24, 67, 107, 108}
+Merged array: {115, 108, 107, 105, 100, 94, 67, 24, 23, 8, 7, 6, 5, 4, 2, 1}
+Example 02:
+Array A1: {1, 3, 5, 6}
+Array A2: {1, 2, 4, 8}
+Array A3: {5, 6, 7, 8, 1234}
+Array A4: {23, 24, 94}
+Array A5: {1, 2, 2, 23, 24, 67, 108}
+Merged array: {1234, 108, 94, 67, 24, 23, 8, 7, 6, 5, 4, 3, 2, 1}
+Note: use dynamic memory allocation
+
+
+Q8:
+#include <iostream>
+using namespace std;
+int* fun(int n)
+{
+    n++;
+    return &n; //Error: address of local variable ‘n’ returned
+}
+int main()
+{
+    int n1=5;
+    int*ptr=fun(n1);
+    
+    cout<<n1<<" "<<*ptr<<endl;
+   
+    return 0;
+}
+____________________________________
+
+#include <iostream>
+using namespace std;
+int* fun()
+{
+    int arr[5]={1,2,3,4,5};
+    return arr; //address of local variable ‘arr’ returned
+}
+int main()
+{
+    
+    int*ptr=fun();
+    
+    cout<<*ptr<<endl;
+   
+    return 0;
+}
+______________________________________________
+
+#include <iostream>
+using namespace std;
+int* creatingArray(int s)
+{
+    int* arr;
+    arr=new int[s];
+    arr[0]=5;arr[1]=20;
+    return arr; //now this is not local array
+}
+int main()
+{
+    int size;
+    cin>>size;
+    int*ptr=creatingArray(size);
+    
+    cout<<*(ptr+1)<<endl;
+   
+    return 0;
+}
+
+Q9:
+#include<iostream>
+using namespace std;
+
+int main() {
+  const int size=3;
+  double d[size]={5.8,6.3,9.4};
+  
+  double *dptr=&d[0];
+  
+  for(int i=0;i<size;i++)
+    cout<<dptr[i]<<" ";
+  return 0;
+}
+
+
+//////////////////////////////
+
+#include<iostream>
+using namespace std;
+void swap(int * n1,int* n2);
+int main() {
+
+  int n1=5,n2=10,z=9;
+  int* ptr1=&n1,*ptr2=&n2;
+  cout<<n1<<" "<<n2<<endl;
+  
+  swap(ptr1,ptr2);
+  
+  cout<<n1<<" "<<n2<<endl;
+  return 0;
+}
+
+void swap(int * ptr1,int* ptr2)
+{
+  int temp=*ptr1;
+  *ptr1=*ptr2;
+  *ptr2=temp;
+  
+}
+
+
+///////////////////////////
+
+
+
+
+#include<iostream>
+using namespace std;
+int main() {
+
+  double d1[]={5.5,2.9};
+  
+   double * const dptr1;
+  dptr1=d1;
+  
+   //*(dptr1++);//error
+  cout<<d1<<" "<<d2<<" "<<*dptr1<<endl;
+  
+  
+  
+  dptr1=&d2;
+  cout<<d1<<" "<<d2<<" "<<*dptr1<<endl;
+  return 0;
+}
+
+code.txt
+Displaying code.txt.
+
+//Code 1
+
+char* FUN(char* X, char* Y, int m, int n)
+{
+    char* L = new char[m*(n+1)];
+    int i, j;
+    for (i = 0; i < m-1; i++) {
+        for (j = 0; j <= n; j++) {
+          if (i == 0 && j == 0)
+                *(L + (i*m)+j) = Y[i] ;
+          else if (i == 0 || j == 0)
+                *(L + (i*m)+j) = X[j] > Y[i] ? X[j] : Y[i];
+          else if (X[i - 1] == Y[j - 1])
+                *(L + (i*m)+j) = X[i - 1] + 1;
+          else
+                *(L + i*m+j) = X[i-1] < Y[i-1] ? X[i-1] : Y[i-1];
+        }
+        *(L + (i*m)+j) = '\0';
+    }
+   
+  return L;
+}
+void display(char *ptr,int m,int n){
+  for(int i=0;i<m+1;i++)
+  {
+    cout<<ptr<<endl;
+    ptr+=n;
+  }
+
+}
+int main()
+{
+char X[] = "PfD";
+char Y[] = "RA";
+int m = sizeof(X)/sizeof(X[0]);
+int n = sizeof(Y)/sizeof(Y[0]) - 1;
+
+char *p=FUN(X, Y, m, n);
+
+display(p, m,n);
+
+delete [] p;
+return 0;
+}
+
+
+
+//Code 2
+
+#include<iostream>
+using namespace std;
+void troops(char *r, char *p, char *q="cause")
+{
+    cout<<q<<" gave "<<r<<" to the "<<p<<endl;
+}
+int main() {
+    char p[] = "cause";
+    char q[] = "support";
+    char r[] = "troops";
+    char support[] = "Gandelf";
+    char cause[] = "Hobbits";
+    troops(p, q, r);
+    troops(q, r);
+    troops(cause, support, r);
+    troops(support, p, cause);
+    troops(r, "p", support);
+    troops(q, q);
+ return 0;
+}
+
+
+//Code 3
+
+#include <iostream>
+ using namespace std;
+int main()
+{
+
+// Initialize 2D array
+    char colour[4][10]= { "Blue", "Red", "Orange", "Yellow" };
+ 
+// Printing Strings stored in 2D array
+    for (int i = 0; i < 4; i++)
+        cout << colour[i] << "\n";
+        
+//printing through character pointer
+for(int i=0; i<4; i++)
+{   
+    char* ptr;
+    ptr=colour[i];
+    cout<<ptr<<" ";
+}
+
+//pointer arithmetic
+cout<<endl;
+char* ptr= colour[3];
+cout<<++ptr;
+ 
+    return 0;
+}
