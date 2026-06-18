@@ -1,0 +1,9 @@
+
+
+Copy Constructor: 84
+Static: 107
+this Pointer: 127
+Member Initializer List: 140
+const Objects: 149
+friend Functions: 151
+

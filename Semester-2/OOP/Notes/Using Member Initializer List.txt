@@ -1,0 +1,62 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class MakeComputer {
+protected:
+    string DeviceType;
+
+public:
+    // Constructor taking a device type
+    MakeComputer(const string& devType) : DeviceType(devType) {}
+};
+
+class Device {
+protected:
+    int CompType;
+
+public:
+    Device() {}
+
+    int getCompType() {
+        return CompType;
+    }
+
+    int selectcomp() {
+        // Some implementation for selecting a computer type
+        return 0;
+    }
+};
+
+class Laptop : public Device {
+private:
+    MakeComputer makecomputer;
+
+public:
+    Laptop() : makecomputer("Laptop") {} // Initialize makecomputer in the constructor initializer list
+};
+
+class PC : public Device {
+private:
+    MakeComputer makecomputer;
+
+public:
+    PC() : makecomputer("PC") {} // Initialize makecomputer in the constructor initializer list
+};
+
+class MAC : public Device {
+private:
+    MakeComputer makecomputer;
+
+public:
+    MAC() : makecomputer("MAC") {} // Initialize makecomputer in the constructor initializer list
+};
+
+int main() {
+    Laptop laptop;
+    PC pc;
+    MAC mac;
+
+    return 0;
+}
