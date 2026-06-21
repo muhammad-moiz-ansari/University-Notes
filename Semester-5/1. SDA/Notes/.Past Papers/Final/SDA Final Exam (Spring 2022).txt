@@ -1,0 +1,78 @@
+SDA Final Exam (Spring 2022)
+
+Question 1 [10+10+5 Marks]
+
+1. A. Identify the mistakes in the given use case diagram for a library management system.
+   (Note: This refers to the diagram on Page 2 involving "Borrower", "Librarian", "Register", "Login", "Database", etc.)
+
+2. B. Create a System Sequence Diagram (SSD) for the given use case for an ATM system.
+   1. Use case Name: Withdraw cash
+   2. Actor: Bank Customer
+   3. Main Success Scenario:
+      1. The bank customer inserts their ATM card
+      2. The system prompts for a PIN
+      3. The bank customer enters the PIN
+      4. The system displays the different alternatives that are available on this unit
+      5. The bank Customer selects "Withdraw Cash"
+      6. The system prompts for an amount
+      7. The bank customer enters an amount
+      8. The system validates the withdrawal
+      9. The system records the transaction
+      10. The ATM card is returned
+      11. Money is dispensed
+      12. Receipt is printed
+   4. Alternate Scenarios:
+      1. 3a. The bank customer enters incorrect PIN
+         1. System prompts "Incorrect PIN"
+         2. System returns ATM card
+      2. 8a. The amount entered by customer is less than the funds available in the account
+         1. System prompts "Insufficient funds"
+
+3. C. For each design pattern below, draw a line from the pattern to the description that best describes it.
+   1. Patterns: Indirection, Low coupling, Information Expert, Protected variations, Creator, High cohesion
+   2. Descriptions:
+      1. Identify points of instability and create a stable interface around such points.
+      2. Assign a knowing responsibility to the class that has the information necessary to fulfill the responsibility.
+      3. Assign responsibilities so that the strength of connection between objects stays low.
+      4. Assign responsibilities so that an object's responsibilities are well focused.
+      5. One class should have the responsibility to make instances of another if it "contains", records, or closely uses the other class.
+      6. To decouple two classes, assign the responsibility of mediating between the two to an intermediate object.
+
+Question 2 [10+15 Marks]
+
+Context: Imagine you are the creator of an intelligent autopilot system that can actually fly and land real airplanes (wow!). Initially you implemented your system to fly small Cessna Skyhawk airplane with a capacity of 4 passengers.
+
+1. A. Recently there has been a change in requirements and the Cessna Aircraft Company would like to use your intelligent autopilot with other three other airplane models as well, i.e. Skycatcher, Airmaster and Skywagon. Improve your current design to support this change and allow easy switching between any of the four Cessna airplanes. Keep in mind requirements may change again since this is a potentially varying functionality.
+   1. Task: Create a class diagram of your improved design and mention any design patterns you have applied.
+
+2. B. Since your design is working well with various Cessna airplanes as a next step, you would like your system to support different types of airplanes other than Cessnas. For example, Boing and Airbus both provide their own software control interfaces. Improve your design to enable easy switching between control systems of various types of airplanes.
+   1. Task: Create a class diagram of your improved design and mention any design patterns you have applied.
+
+3. C. Write code for your improved design in part B. Only implement functions that are necessary, for the rest you can leave function bodies empty.
+
+Question 3 [30+20 Marks]
+
+1. A. You are provided a use case, domain model and system sequence diagram of an asset management system of a vampire hunting company called Stake4Less. Create Sequence Diagrams for all system events shown in the SSD. Make sure your design follows GRASP patterns.
+   1. Use case Name: Checkout Weapon
+   2. Precondition: Hunter is identified and authenticated
+   3. Main Success Scenario:
+      1. The hunter starts a new weapon checkout.
+      2. The system displays the different weapon types available
+      3. The hunter enters "Projectile Weapon" with range and ammo rounds
+      4. The system prompts for checkout duration
+      5. The hunter enters number of days
+      6. The system records the weapon being checked out and presents weapon type, ammo rounds and checkout duration.
+      7. The hunter repeats 2-6 until end indicated
+      8. The system records completed checkout.
+      9. The system presents confirmation message.
+   4. Alternate Scenarios:
+      1. 3a. The hunter enters "Meele Weapon" with weight
+         1. Steps 4-9
+      2. 3b. Projectile weapon is not available
+         1. System prompts "Desired weapon is not available."
+         2. Repeat 2-9
+      3. 3c. Meele weapon is not available
+         1. System prompts "Desired weapon is not available."
+         2. Repeat 2-9
+
+2. B. Convert your sequence diagrams in part A to code. Make sure your code is consistent with your design.

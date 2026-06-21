@@ -1,0 +1,44 @@
+Lecture 01-intro-course
+https://gemini.google.com/share/bb31227890ad
+
+Lecture 02-background
+https://gemini.google.com/share/e0406c23e74a
+
+Lecture 03-accelerators
+https://gemini.google.com/share/300fce77330f
+
+Lecture 04-cuda01
+https://gemini.google.com/share/712276e7a690
+
+Lecture 05-cuda02
+https://gemini.google.com/share/de8e72025ef8
+
+Lecture 06-performance-analysis
+https://gemini.google.com/share/2cf22597da7e
+
+Lecture 07-GPU-architecture
+https://gemini.google.com/share/7d6be97f605b
+
+Lecture 08-mem-opt
+https://gemini.google.com/share/e51e9f83b5af
+
+Lecture 09-cuda-atomics
+https://gemini.google.com/share/367db0d91e60
+
+Lecture 10-adv-mem-opt
+https://gemini.google.com/share/ac866e820193
+
+Lecture 11-cuda-streams
+https://gemini.google.com/share/c15a668f3f4e
+
+Lecture 12-openacc
+https://gemini.google.com/share/fb58ac6efb9e
+
+Numba Cuda Jit
+https://gemini.google.com/share/888a38b5b744
+
+Exam Chat
+https://gemini.google.com/share/5a1406f31218
+
+ChatGPT Chats (Might be deleted)
+https://chatgpt.com/g/g-p-68eb78df00f481919e0d57424de6d37b-hpc-lectures/project

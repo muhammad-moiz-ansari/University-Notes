@@ -1,0 +1,9 @@
+	
+Constraints in the Requirement Paragraph
+1.    Authentication Constraint
+o    Only registered students can log in (not guests or unregistered users).
+o    Login requires a unique student ID and password.
+2.    Security Constraint
+o    After three consecutive failed login attempts, the account is temporarily locked for 10 minutes.
+3.    Accessibility Constraint
+o    The login page must be **accessible via desktop

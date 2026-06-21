@@ -1,0 +1,9 @@
+Possible iterations at POS:
+1. Customer arrives at a POS checkout with items to purchase
+2. Cashier starts a new sale, start perparing invoice
+3. Cashier enters item ID, or scan item bar code
+4. Enter quantity  2 or more, default quantity is 1
+cashier repeats steps 3 and 4, until all items are scanned
+5. Cashier ask total net amount for payment (disc and tax)
+6. Customer pays cash or by card
+7. Invoice is generated with balance.

@@ -1,0 +1,59 @@
+----------------- AUTOMATA GEMINI NOTES CHATS -----------------
+
+Past Paper MCQs
+https://gemini.google.com/share/2357a7a831b3
+
+To TM Conversions
+https://gemini.google.com/share/12646b974a97
+
+Lecture Slides Explanation + MCQs:
+Lec-1
+https://gemini.google.com/share/5f6678cd6183
+
+Lec-2
+https://gemini.google.com/share/8e64cf6c98de
+
+Lec-3
+https://gemini.google.com/share/6bcbf04c09a7
+
+Lec-4a
+https://gemini.google.com/share/789e61de8069
+
+Lec-4b
+https://gemini.google.com/share/d79ddc564d5b
+
+Lec-5
+https://gemini.google.com/share/84e13e3e608b
+
+Lec-6
+https://gemini.google.com/share/50d19836eeea
+
+Lec-7
+https://gemini.google.com/share/f5eb423c480b
+
+Lec-8
+https://gemini.google.com/share/a9f69725086e
+
+Lec-9
+https://gemini.google.com/share/9249559e1ec6
+
+Lec-10a
+https://gemini.google.com/share/20246b27782c
+
+Lec-10b, 11b
+https://gemini.google.com/share/853b025d4978
+
+Lec-11a
+https://gemini.google.com/share/34d340c419d3
+
+Lec-12
+https://gemini.google.com/share/111e5fdc6891
+
+Lec-13
+https://gemini.google.com/share/670fe6b0fccf
+
+Lec-15, 21
+https://gemini.google.com/share/92f4fae89a83
+
+Lec-17
+https://gemini.google.com/share/99d325a2865c

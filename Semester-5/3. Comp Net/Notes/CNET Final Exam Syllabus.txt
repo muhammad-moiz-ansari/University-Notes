@@ -1,0 +1,28 @@
+CNET Final Exam Syllabus
+
+1. Socket Programming (Week 5)
+   1.1. Week 5: UDP and TCP Socket API (socket, bind, listen, accept, connect, sendto, recvfrom)
+
+2. Transport Layer (Week 6-10)
+   2.1. Week 6: Transport-layer Services, Multiplexing/Demultiplexing, and UDP
+   2.2. Week 7: Principles of Reliable Data Transfer (rdt 1.0 - 3.0, Pipelining, GBN, SR)
+   2.3. Week 8: Connection-Oriented Transport: TCP (Segment Structure, Flow Control, Connection Management)
+   2.4. Week 9: Principles of Congestion Control
+   2.5. Week 10: TCP Congestion Control and VLSM (Variable Length Subnet Masking)
+   2.6. VLSM
+
+3. Network Layer - Data Plane (Week 11-13)
+   3.1. Week 11: Router Architecture, Buffer Management, and Packet Scheduling
+   3.2. Week 12: IP Protocol (Datagram Format, Addressing, DHCP, NAT, and IPv6)
+   3.3. Week 13: Generalized Forwarding and SDN (OpenFlow Match + Action)
+
+4. Network Layer - Control Plane (Week 14-15)
+   4.1. Week 14: Routing Algorithms (Link State/Dijkstra and Distance Vector)
+   4.2. Week 15: Intra-ISP Routing (OSPF), Inter-ISP Routing (BGP), and ICMP
+
+5. Link Layer (Week 16)
+   5.1. Week 16: Link Layer Services, Error Detection/Correction, Multiple Access Protocols, and ARP (Up to Slide 50)
+
+In essence, Week 5 to 16 (up till Slide 50) and VLSM.
+
+Note: Topics after ARP are not included in the final syllabus.

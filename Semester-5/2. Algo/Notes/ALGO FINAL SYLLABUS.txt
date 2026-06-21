@@ -1,0 +1,35 @@
+ALGO FINAL SYLLABUS
+
+1. Time Complexity
+2. All Sorting Algorithms
+2.1. Insertion Sort
+2.2. Merge Sort
+2.3. Quick Sort
+2.4. Heap Sort
+2.5. Linear Sort
+2.5.1 Counting Sort
+2.5.2 Radix Sort
+2.5.3 Bucket Sort
+3. Recursion and Analysis (Master method, Recursion Tree)
+4. String Matching Algorithms
+4.1. Naïve String Matching
+4.2. Rabin Karp Algorithm
+4.3. String Matching with Finite Automata
+4.4. KMP String Matching
+5. Graphs
+5.1. BFS
+5.2. DFS
+5.3. Dijkistra
+5.4. Bellman-Ford
+5.5. Floyd Warshall
+5.6. MST (Prims and Kruskal)
+6. Dynamic Programming
+6.1. Rod Cutting
+6.2. Matrix Multiplication
+6.3. LCS (Longest Common Subsequence)
+6.4. KnapSack
+7. Greedy
+7.1. Activity Selection
+7.2. Huffman Encoding
+7.3. 0/1 and Fractional KnapSack
+

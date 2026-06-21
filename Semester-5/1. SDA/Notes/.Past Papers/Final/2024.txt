@@ -1,0 +1,115 @@
+Question # 1 [Avg-attempt-minutes= 30, Marks = 7+7+6 = 20]
+(a) Discuss the implementation of the Observer pattern for a real-time "stock price notilication system". Include a brief explanation of its working with a class diagram clearly
+describing the method calls. Don't write the actual Java code (7 marks). [key compоnents and working: 4 marks, Class Diagram: 3 marks]
+
+b) Explain how the Strategy pattern allows for dynamic behavior changes in an application. Design a strategy-based solution for a text formatter that can format text in 
+different styles (e.g., plain-text, HTML, and Markdown). Include a class diagram. Write
+the Java code to illustrate your Context class only. Don't write extra code. (7 Marks)
+Joyerview and class diagrams: 4 marks, context class proper Java code: 3 marks]
+
+c) Provide a UML class diagram or code example to demonstrate the implementation that
+bridges the gap between incompatible interfaces. Compare the this pattern with the
+Facade pattern. When would you prefer this over Facade? (Please don't write any Java
+Code) (6 marks) [correctly specify pattern: 1 mark, class diagram: 2 marks: comparison:
+3 marks]
+
+---------------------------------------------------------------------------------------
+
+Question # 2 [Avg-attempt-minutes= 40, Marks=20]
+Part: B (Employee Management System)
+Scenario
+(6 Marks)
+You are tasked with creating a JavaFX application connected to a MySQL database for
+managing employee records. The application should allow the user to: View all employee
+records in a Table View. Add a new employee using a form (Text Field for Name, Combo
+Box for Department, and Text Field-for Salary). Read the below code and write the
+code for missing lines (1 to 6).
+public class EmployeeManagementApp extends Application
+{
+	private TableView<Employee> employeeTable = new TableView<>();
+	private ObservableList<Employee> employeeData = FXCollections.observableArrayList();
+	1. Create TextField for Name?		>>> Write your code here
+	2. Create ComboBox for Department?	>>> Write your code here
+	3. Create TextField for Salary?		>>> Write your code here
+}
+// Load Employees
+private void loadEmployees() {
+	employeeData.clear();
+	try (Connection conn = connect()) {
+	4. String query =?		>>> Write your code here
+	5. Statement stmt =?		>>> Write your code here
+	6. ResultSet rs =?		>>> Write your code here
+	while (rs.next()) {
+		employeeData.add(new Employee(
+		rs.getString("name"),
+	}
+	rs.getString("department"),
+	rs.getDouble("salary")
+	));
+} catch (SQLException e) {
+	e.printStackTrace();
+	}
+}
+
+Part: C (7 Marks)
+Scenario:
+A customer places a preliminary order with the sales department. The sales department
+checks the order for accuracy and obtains the availability of order items from the warehouse.
+The customer is informed about the availability of items and he can decide whether to proceed
+with the order or to cancel it. If the customers decision is to cancel the order, then the sales
+department will cancel it. Otherwise, the sales department will bill the customer while the
+warehouse prepares the order items for delivery. The customer is then asked to pay the bill.
+Usually the full amount should be paid, but if the customer is creditworthy, then he can
+make a partial payment. For partial payments, the sales department would get the managers
+approval. If the manager rejects approval, then the sales department will cancel the order.
+For fully paid bills, the sales department will close the order and the warehouse will deliver
+the items. For partially paid bills, the sales department will create a partially paid order and
+the warehouse will deliver the items.
+(a) For above food ordering scenario the following diagram shows an activity diagram created
+for the above scenario. Without making any assumptions, identify the activities A to G
+accurately from the activity list given -below the diagram and fill in the blanks. Please
+note that the same activity may appear more than once in the diagram.
+
+Activities:
+1. Approve Partial Payment
+2. Inform Customer
+3. Cancel Order
+4. Check Order
+5. Create Partially paid Order
+6. Bill Customer
+7. Prepare Items
+
+(Use case Diagram)
+
+--------------------------------------------------------------------------------------
+
+Question # 3 [Avg-attempt-minutes= 40, Marks = 20]
+Part: A		(07 Marks)
+Scenario:
+The following domain model captures some basic information about a kids hockey league. answering the following questions, state any assumptions that you make.
+(a) How many games will a captain play in?
+(b) What is the maximum number of games that any given coach can be involved in?
+(c) In the model, the relationship between player and team is shown as an aggregation, while that between captain and team is shown as a composition. Is this a good choice?
+(d) The league actually has two types of game: regular season games and playoffs. Each team plays 4 regular season games against each of the other teams. Every team also gets to play in the playoffs, which are conducted as a knockout a team is out of the playoff's when it loses a playoff game. How would you modify the model to capture this additional information?
+
+Part: B		(6 Marks)
+Write a piece of Java code for Session and Transaction classes.
+(Note: Please don't write any code for other classes or main function)
+(SD Diagram)
+write your code on the answer sheet.
+
+Part: C		(7 Marks)
+Scenario:
+The administrator enters the patients name, address, date of birth and emergency contact details into the system. If the patient has only public health insurance, the administrator enters the patients medicare number, and the system verifies this with government, health database. If the patient also has private health insurance, then the administrator enters also the patients private health insurance details, and the system verifies these details with the private health insurance system. When these details are verified as correct, the system saves the patient's details and confirms the registration.
+(a) Identify the actors and the objects in the following scenario to register a patient in a hospital management system
+(b) Sketch a UML sequence diagram for the scenario where the administrator registers a patient who only has public health insurance.
+
+----------------------------------------------------------------------------------------------------
+
+Question # 4		[Avg-attempt-minutes= 15, Marks = 10]
+Scenario:
+Read the case study below and answer part a, b and c.
+Automotive companies need to verify the quality of service of workshops doing maintenance service on the vehicles. Workshops belong to companies that are independent of the automotive company, and are spread geographically. Phantom test analyzes the quality of service with special care in not making aware workshops that they are tested. Verification of the quality of service is made as follows. Assume that the Automotive company is A. A subcontracts the verification to a specialized company B (this is important to guarantee that workshops cannot know when and how they are verified). B finds owners of vehicles manufactured by A and asks then to volunteer for the service. Volunteers are paid an amount of money. A volunteer brings its car to B. B introduces a defect in the car. Then the volunteer brings the car to a workshop for repair. After repair B inspects the car to verify the repair. Further, B interviews the volunteer about the quality of service (courtesy, cleanness, speed. price, etc). After having collected a defined number of cases (each case is a repair of a vehicle where a defect was injected) B submits a report to A.
+(a) Identify actors from above system. [3 marks]
+(b),Identify use cases from above system. [4 marks]
+(c) Draw use cases diagram for above system. [3 Marks]

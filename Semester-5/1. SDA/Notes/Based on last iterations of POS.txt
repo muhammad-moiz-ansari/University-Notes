@@ -1,0 +1,1 @@
+Based on last iterations of POS, write down iterations of refund item or return-items. You can use ChatGPT to get similar styled iterations for return-items

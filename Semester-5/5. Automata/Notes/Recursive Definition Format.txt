@@ -1,0 +1,18 @@
+Recursive Definition Format
+
+Q2: Write a Recursive Definition, Z = (a,b) 
+a. for all strings not ending with aa or bb.
+
+Language examples={λ, a, b, aab, bab, aba, bba, ...}
+
+Step-1:
+Base case: L={λ, a, b}
+
+Step-2:
+If x is in L, then Sab, Sba are also in L, where S∈{λ, a, b}
+
+Step-3:
+(Exceptional strings, if any)
+
+
+You can use xx, xab, xax, etc in step 2 too

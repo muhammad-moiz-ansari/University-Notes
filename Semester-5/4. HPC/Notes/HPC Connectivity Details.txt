@@ -1,0 +1,16 @@
+IP Addresses of machines:
+
+Section A: HPC01: 172.17.170.90
+Section B: HPC02: 172.17.170.89
+
+---> Section C: HPC03: 172.17.170.88
+
+Add the following lines at the end of your .bashrc (hidden file in your home folder), save it, logout and log back in for the changes to take effect
+
+# for Nvidia HPC Toolkit
+NVARCH=`uname -s`_`uname -m`; export NVARCH
+NVCOMPILERS=/opt/nvidia/hpc_sdk; export NVCOMPILERS
+MANPATH=$MANPATH:$NVCOMPILERS/$NVARCH/25.7/compilers/man; export MANPATH
+PATH=$NVCOMPILERS/$NVARCH/25.7/compilers/bin:$PATH; export PATH
+export MODULEPATH=$NVCOMPILERS/modulefiles:$MODULEPATH
+source /etc/profile.d/modules.sh

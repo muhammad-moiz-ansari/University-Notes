@@ -1,0 +1,9 @@
+void compute(float* A, float* B, float* C, int N)
+{
+   for(int i=0; i<N; ++i)
+   {
+      A[i] = A[i] * 2.5f;
+      B[i] = B[i] + 10.0f;
+      C[i] = A[i] + B[i];
+   }
+}

@@ -1,0 +1,1 @@
+Programming massively parallel processors _ a hands-on -- Wen-mei W_ Hwu, David B_ Kirk, Izzat El Hajj, Ph_D_ -- 4, 2023

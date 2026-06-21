@@ -1,0 +1,19 @@
+SDA FINAL SYLLABUS:
+
+1. Introduction to SDA
+2. OOP Principals using Java
+3. Usecase Diagram
+4. High level usecases
+5. Fully dresses/expanded use cases
+6. Domain model
+7. SSD
+8. SD
+9. Class Diagram and java code
+10. Java FX/SWING
+11. Database connection to java
+12. GRASP Patterns
+13. GOF patterns ( Singleton, Factory,  Facade, Adapter)
+13.1. Singleton
+13.2. Factory
+13.3. Facade
+13.4. Adapter

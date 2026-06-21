@@ -1,0 +1,11 @@
+SDA Final Exam (Fall 2022)
+
+Question 01 "Provide the pre-condition, post-condition and alternate scenarios for the given 'Book Flight' Use case." 
+
+Question 02 "Draw a System Sequence Diagram corresponding to the scenario given in the question 01." 
+
+Question 03 "Produce design sequence diagrams for 'Book Flight' use case by apply GRASP patterns." 
+
+Question 04 "Draw a class diagram corresponding to the scenario given in the question 01." 
+
+Question 05 "Identify and explain the improvements that the controller, expert and creator patterns introduce to the behavioral design for the 'Book Flight' use case."

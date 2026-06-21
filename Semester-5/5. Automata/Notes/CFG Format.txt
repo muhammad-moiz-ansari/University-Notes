@@ -1,0 +1,6 @@
+CFG Format
+
+S → AX | YA | a
+X → SA
+Y → SS
+A → λ

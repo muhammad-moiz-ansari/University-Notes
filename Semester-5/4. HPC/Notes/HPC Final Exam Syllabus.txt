@@ -1,0 +1,105 @@
+HIGH-PERFORMANCE COMPUTING (HPC) Final Exam SYLLABUS
+
+Lecture 01: Course Introduction & Trends
+1.1. The Landscape of Computing
+  1.1.1. The "Power Wall" and the end of Frequency Scaling
+  1.1.2. The shift from Single-core to Multicore/Manycore architectures
+  1.1.3. Moore’s Law vs. actual performance gains
+1.2. HPC Definitions
+  1.2.1. What defines an HPC system?
+  1.2.2. Latency-oriented (CPU) vs. Throughput-oriented (GPU) design
+
+Lecture 02: Architectural Background
+2.1. Computer Architecture Basics
+  2.1.1. Memory Hierarchy (Registers -> L1/L2 -> RAM -> Disk)
+  2.1.2. Instruction Level Parallelism (ILP) and Pipelining
+2.2. Classification & Theory
+  2.2.1. Flynn’s Taxonomy (SISD, SIMD, MISD, MIMD)
+  2.2.2. Amdahl’s Law: Calculating theoretical maximum speedup
+
+Lecture 03: Accelerators
+3.1. Heterogeneous Computing
+  3.1.1. The Host (CPU) + Device (Accelerator) model
+  3.1.2. Types of Accelerators: GPUs, FPGAs, DSPs, TPUs
+3.2. Ecosystem
+  3.2.1. Programming models: Libraries (Thrust), OpenACC, CUDA
+
+Lecture 04: CUDA Programming Basics (Part 1)
+4.1. CUDA Memory Management
+  4.1.1. Host vs. Device memory spaces
+  4.1.2. Allocating memory: cudaMalloc, cudaFree
+  4.1.3. Moving data: cudaMemcpy (HostToDevice / DeviceToHost)
+4.2. First Kernel
+  4.2.1. The __global__ specifier
+  4.2.2. Writing a basic Vector Addition kernel
+
+Lecture 05: CUDA Programming Basics (Part 2)
+5.1. Thread Hierarchy
+  5.1.1. Threads, Blocks, and Grids
+  5.1.2. Kernel Launch Syntax: kernel<<<gridDim, blockDim>>>(args)
+5.2. Coordinate Systems
+  5.2.1. Built-in variables: threadIdx, blockIdx, blockDim, gridDim
+  5.2.2. Calculating the Global Thread ID for 1D arrays
+
+Lecture 06: Performance Analysis
+6.1. Metrics
+  6.1.1. FLOPS: Theoretical Peak vs. Measured Performance
+  6.1.2. Bandwidth limitations
+6.2. Profiling
+  6.2.1. Identifying bottlenecks (Compute-bound vs. Memory-bound)
+
+Lecture 07: GPU Architecture
+7.1. Hardware Execution
+  7.1.1. Streaming Multiprocessors (SMs) and SPs (CUDA Cores)
+  7.1.2. The Warp: SIMT execution (groups of 32 threads)
+7.2. Execution Pitfalls
+  7.2.1. Warp Divergence: Performance loss from branching
+  7.2.2. Latency Hiding: Fast context switching between warps
+
+Lecture 08: Memory Optimizations
+8.1. GPU Memory Types
+  8.1.1. Global Memory (Slow, large capacity)
+  8.1.2. Shared Memory (Fast, on-chip, user-managed cache)
+  8.1.3. Constant Memory (Cached, read-only)
+8.2. Access Efficiency
+  8.2.1. Coalesced Access: Aligning memory reads
+  8.2.2. Pinned Memory (Page-locked) vs. Pageable Memory
+
+Lecture 09: CUDA Atomics
+9.1. Synchronization & Safety
+  9.1.1. Race conditions in parallel computing
+  9.1.2. Atomic functions: atomicAdd, atomicCAS, atomicExch
+9.2. Patterns
+  9.2.1. Calculating Histograms
+  9.2.2. Privatization: Using Shared Memory to reduce contention
+
+Lecture 10: Advanced Memory Optimizations
+10.1. Shared Memory Issues
+  10.1.1. Bank Conflicts: Simultaneous access to the same memory bank
+  10.1.2. Padding arrays to avoid conflicts
+10.2. Modern Features
+  10.2.1. Unified Memory: cudaMallocManaged
+  10.2.2. Tiled Algorithms (Stencil computations)
+
+Lecture 11: CUDA Streams
+11.1. Concurrency
+  11.1.1. Default Stream vs. Created Streams
+  11.1.2. Serial vs. Concurrent execution
+11.2. Overlapping Operations
+  11.2.1. Hiding data transfer costs (Copy/Compute overlap)
+  11.2.2. Stream Synchronization (cudaStreamSynchronize)
+
+Lecture 12: OpenACC
+12.1. Directive-Based Approach
+  12.1.1. Syntax: #pragma acc
+  12.1.2. kernels vs. parallel regions
+12.2. Data Management
+  12.2.1. Data clauses: copyin, copyout, create
+
+Lecture 13: CUDA in Python (Supplemental)
+13.1. Numba Basics
+  13.1.1. The @jit and @njit decorators for CPU acceleration
+13.2. Writing CUDA Kernels in Python
+  13.2.1. The @cuda.jit decorator
+  13.2.2. Launching kernels: func[blocks, threads](args)
+  13.2.3. Device Arrays and Memory Management
