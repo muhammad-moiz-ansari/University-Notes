@@ -1,0 +1,9 @@
+Instructors:
+
+- DB: Ms. Hira Mastoor
+- OS: Ms. Rabail Zahid
+- Probs: Dr. Sehrish
+- FOM: Ms. Zoya Mashadi
+- TBW: Ms. Eeman
+- DB Lab: Ms. Asma Tufail
+- OS Lab: Ms. Laiba Noor
