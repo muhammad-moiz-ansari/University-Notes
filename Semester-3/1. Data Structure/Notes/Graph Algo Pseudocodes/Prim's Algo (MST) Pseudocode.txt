@@ -1,0 +1,24 @@
+MST-Prim(G, w, r)  // w is the weight matrix, r is the root
+{
+    Q = V[G];  // Insert all vertices of G into a priority queue
+    for each u ∈ Q 
+    {
+        key[u] = ∞; // Set all keys to infinity
+        p[u] = NULL; // Initialize parents as NULL
+    }
+    key[r] = 0; // Set the key of the root to 0
+    
+    while (Q not empty) 
+    {
+        u = ExtractMin(Q); // Extract the vertex with the smallest key
+        for each v ∈ Adj[u]  // Iterate over adjacent vertices
+        {
+	    if (v ∈ Q and w(u, v) < key[v]) 
+	    {
+                p[v] = u; // Update parent of v
+                key[v] = w(u, v); // Update key of v
+            }
+        }
+    }
+    return p; // Return the parent array representing the MST
+}

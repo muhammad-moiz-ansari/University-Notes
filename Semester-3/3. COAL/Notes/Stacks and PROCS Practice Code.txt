@@ -1,0 +1,51 @@
+.386
+.model flat, stdcall
+.stack 100
+.DATA
+
+help1 dd ?
+help2 dd ?
+
+ExitProcess proto, dwExitCode : dword
+.code
+
+zlorp PROC
+POP help2
+MOV eax,22h
+PUSH eax
+MOV eax,33h
+PUSH eax
+PUSH help2
+ret
+zlorp ENDP
+
+
+ali PROC
+POP help1
+MOV eax,11h
+PUSH eax
+call zlorp
+MOV eax,44h
+PUSH eax
+PUSH help1
+ret
+ali ENDP
+
+main PROC
+;Garbage clearance
+XOR eax,eax
+XOR ebx,ebx
+XOR ecx,ecx
+XOR edx,edx
+XOR esi,esi
+XOR edi,edi
+
+call ali
+
+MOV eax,0
+PUSH eax
+
+
+INVOKE ExitProcess, 0 
+main ENDP
+End main

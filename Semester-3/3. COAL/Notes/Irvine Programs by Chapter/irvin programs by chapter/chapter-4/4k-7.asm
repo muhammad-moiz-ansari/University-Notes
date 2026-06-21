@@ -1,0 +1,33 @@
+;INDIRECT ADDRESSING
+.model small
+.stack 0100h
+.data
+	val1 db 1,2,3
+	val2 dw 4,5,6
+	;val3 dd 4,5,6
+.code
+	start:
+	mov ax,@data		   ;
+	mov ds,ax
+	mov ax,0               ; zeroing ax registers
+	mov cl,val1
+	
+	mov si,0	; moving address
+	mov al,val1[si]				; 
+	inc si
+	add al,val1[si]				;
+
+	mov si,0	; moving address
+	mov di,0
+	mov bx,val2[si]				
+	mov si,di*type val2
+	add bx,val2[si]	
+	inc di
+	mov si,di*type val2
+	add bx,val2[si]
+	
+end start
+					
+mov ah,04ch
+int 021h
+end

@@ -1,0 +1,24 @@
+Dijkstra(G, w, s)  // w is the weight matrix, s is the source vertex
+{
+    Q = V[G]; 	// Insert all vertices into a priority queue
+    for each u ∈ Q 
+    {
+        dist[u] = ∞; // Initialize distances to infinity
+        p[u] = NULL; // Initialize parents as NULL
+    }
+    dist[s] = 0; // Distance of source is set to 0
+    
+    while (Q not empty) 
+    {
+        u = ExtractMin(Q); // Extract the vertex with the smallest distance
+        for each v ∈ Adj[u]   // Iterate over adjacent vertices
+        {
+	    if (dist[u] + w(u, v) < dist[v])  // Relax edge (u, v)
+	    {
+                dist[v] = dist[u] + w(u, v); // Update distance of v
+                p[v] = u; // Update parent of v
+            }
+        }
+    }
+    return dist, p; // Return distances and parent array
+}

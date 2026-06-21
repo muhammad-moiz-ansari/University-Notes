@@ -1,0 +1,19 @@
+MST-Kruskal(G, w)   // w is the edge weight list
+{
+    S = ∅; 	// Initialize empty set for MST
+    for each v ∈ V[G] 
+    {
+        MakeSet(v); // Create a disjoint set for each vertex
+    }
+    Sort(E[G], w); // Sort edges by weight in non-decreasing order
+
+    for each (u, v) ∈ E[G]   // Iterate over all edges
+    {
+        if (FindSet(u) ≠ FindSet(v))  // Check if u and v are in different sets
+	{
+            S = S ∪ {(u, v)};   // Add edge (u, v) to MST
+            Union(u, v);        // Union the sets of u and v
+        }
+    }
+    return A;  // Return the MST as a set of edges
+}

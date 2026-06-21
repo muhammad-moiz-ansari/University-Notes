@@ -1,0 +1,30 @@
+;DEC & Flags affected
+
+.386
+.model flat, stdcall     ; for protected mode
+.stack 0100h
+ExitProcess PROTO,dwExitCode:DWORD    ;window service
+.data
+    string1 db 'eman srotcurtsni ruoy elcric sunob erocs ot'
+    string2 db $-string1 dup(0)
+    stp dd string1
+    ;ext db "-----------"
+    
+.code
+main PROC 
+   mov eax,0
+   mov ebx,0
+   mov ebx, 5
+   mov eax, 1
+   
+   start:
+   inc eax
+   inc ebx
+   cmp ebx,10
+   jb L1
+   
+   mov eax,0
+INVOKE ExitProcess,0
+main ENDP
+END main
+ 

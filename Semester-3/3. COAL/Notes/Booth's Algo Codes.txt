@@ -1,0 +1,155 @@
+;;;;;;;;;;;;;;;;;;;   Unsigned Multiplication Code   ;;;;;;;;;;;;;;;;;;;
+include irvine32.inc
+
+.DATA
+	multiplicand db	79h
+	multiplier db 55h
+	count db 7
+	shcount = 8 - 7 + 8
+	result dw ?
+
+.CODE
+main PROC
+	mov edx, 0
+
+	movzx ecx, count
+	clc
+	movzx ebx, multiplier
+	mov eax, 0
+
+	L1:
+		mov dx, bx
+		and dx, 0001
+		cmp dx, 1
+		clc
+		jne skip1	
+			add al, multiplicand
+		Skip1:
+		pushfd
+		shr bx, 1
+		mov edx, 0
+		shrd dx, ax, 1
+		shr dx, shcount
+		or bx, dx
+		shr ax, 1
+		popfd
+		jnc nocarry
+			mov dx, 8000h
+			shr dx, shcount
+			OR ax, dx
+		Nocarry:
+	Loop L1	
+
+	exit
+main ENDP
+
+end main
+
+
+;;;;;;;;;;;;;;;;;;;  Signed Multiplication Code  ;;;;;;;;;;;;;;;;;;;
+
+include Irvine32.inc
+
+.data
+
+	A  db 0
+	;Q  db 1000b
+	Q  db 11001000b
+	Q1 db 0
+	Q0 db 0
+	;M  db 1010b
+	M  db 11110110b
+
+.code
+main PROC
+
+	mov eax, 0
+	mov ebx, 0
+	mov ecx, 8
+	mov edx, 0
+
+	mov al, Q
+
+	L1:
+		mov Q0, 1
+		AND Q0, al
+		mov bl, Q0
+		cmp bl, Q1
+		je ShiftThem
+		ja Subtract
+		
+		Addition:
+			ADD ah, M
+
+		jmp ShiftThem
+		Subtract:
+			SUB ah, M
+
+		ShiftThem:
+			mov Q1, 1
+			AND Q1, al
+			SAR ax, 1
+
+	LOOP L1
+
+	mov ecx, 0
+
+exit
+main endp
+end main
+
+
+;;;;;;;;;;;;;;;;;;;   Long Division   ;;;;;;;;;;;;;;;;;;;
+
+include Irvine32.inc
+
+.data
+
+A db 0
+M db 2Eh
+Q db 0F7h
+count dd 8
+
+.code
+main PROC
+
+MOV eax,0
+MOV ebx,0
+
+MOV ecx,count
+
+MOV al,A
+MOV bh,Q
+
+loop1:
+
+MOV ah,0
+MOV bl,0
+
+
+	SHLD ax,bx,1
+	SHL bh,1
+
+	SUB al,M
+
+	cmp al,0
+	JG yess
+	AND bh,11111110b
+	ADD al,M
+
+	JMP done
+	yess:
+	OR bh,00000001b
+
+	done:
+	MOV A,al
+	MOV	Q,bh
+
+DEC ecx
+cmp ecx,0
+
+JNE loop1
+
+exit
+main endp
+end main

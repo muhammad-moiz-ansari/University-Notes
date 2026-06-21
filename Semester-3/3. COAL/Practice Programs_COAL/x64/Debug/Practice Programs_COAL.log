@@ -1,0 +1,9 @@
+﻿  Assembling Program 1.asm...
+Program 1.asm(1): error A2008: syntax error : .
+Program 1.asm(2): error A2008: syntax error : .
+Program 1.asm(3): error A2008: syntax error : .
+Program 1.asm(4): error A2008: syntax error : ,
+Program 1.asm(19): error A2008: syntax error : Invoke
+Program 1.asm(22): error A2008: syntax error : main
+Program 1.asm(23): error A2088: END directive required at end of file
+D:\Softwares\Microsoft Visual Studio\MSBuild\Microsoft\VC\v170\BuildCustomizations\masm.targets(70,5): error MSB3721: The command "ml64.exe /c /nologo /Zi /Fo"x64\Debug\Program 1.obj" /W3 /errorReport:prompt  /Ta"Program 1.asm"" exited with code 1.
