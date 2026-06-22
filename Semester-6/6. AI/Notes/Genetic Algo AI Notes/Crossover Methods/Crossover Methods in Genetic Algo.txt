@@ -1,0 +1,119 @@
+# Crossover Methods in Genetic Algorithms
+
+## 1. Single-Point Crossover
+
+Pick **one random point** in the chromosome. Parent1 contributes everything before it, Parent2 contributes everything after it.
+
+```
+Parent1: [1, 3, 5, 2, 4, 6, 7, 8, 2, 3 | 4, 5, 1, 2, 6, 7, 3, 8, 2, 1]
+Parent2: [3, 5, 2, 4, 6, 7, 8, 2, 3, 4 | 5, 1, 2, 6, 7, 3, 8, 2, 1, 4]
+                                        ^
+                                   cut point = 10
+
+Child1:  [1, 3, 5, 2, 4, 6, 7, 8, 2, 3 | 5, 1, 2, 6, 7, 3, 8, 2, 1, 4]
+Child2:  [3, 5, 2, 4, 6, 7, 8, 2, 3, 4 | 4, 5, 1, 2, 6, 7, 3, 8, 2, 1]
+```
+
+**Pros:**
+- Simplest to implement
+- Works well for short chromosomes
+
+**Cons:**
+- Genes at the two ends never get mixed together
+- Limited diversity in offspring
+- For a 20-gene chromosome like yours, mixing is very limited
+
+### When to Use It:
+**Scenario:** You are optimizing a short 10-gene chromosome for a simple scheduling problem where early genes represent morning tasks and late genes represent evening tasks. The two halves are naturally independent from each other.
+
+**Use it because:**
+1. **Chromosome is short** — With only 10 genes, a single cut point is enough to produce meaningful offspring without over-engineering the crossover.
+2. **Two halves are independent** — Morning and evening tasks don't interact, so swapping one half between parents produces valid and diverse children.
+3. **Simplicity is better here** — The problem is simple enough that the limited mixing of single-point crossover is not a disadvantage.
+4. **Fast execution** — Single-point is the cheapest crossover to compute, which matters when running thousands of generations on a simple problem.
+
+---
+
+## 2. Two-Point Crossover
+
+Pick **two random points**. Parent1 contributes the outside segments, Parent2 contributes the middle segment (or vice versa).
+
+```
+Parent1: [1, 3, 5, 2, 4 | 6, 7, 8, 2, 3, 4, 5, 1 | 2, 6, 7, 3, 8, 2, 1]
+Parent2: [3, 5, 2, 4, 6 | 7, 8, 2, 3, 4, 5, 1, 2 | 6, 7, 3, 8, 2, 1, 4]
+                        ^                          ^
+                      point1=5                  point2=13
+
+Child1:  [1, 3, 5, 2, 4 | 7, 8, 2, 3, 4, 5, 1, 2 | 2, 6, 7, 3, 8, 2, 1]
+Child2:  [3, 5, 2, 4, 6 | 6, 7, 8, 2, 3, 4, 5, 1 | 6, 7, 3, 8, 2, 1, 4]
+```
+
+**Pros:**
+- Much better gene mixing than single-point
+- Both ends AND middle get mixed
+- Better diversity in offspring
+- Industry standard for most GA problems
+
+**Cons:**
+- Slightly more complex than single-point
+- Still doesn't mix every gene individually
+
+### When to Use It:
+**Scenario:** You are optimizing a 20-gene chromosome for a warehouse storage problem with 9 constraints. Products have natural groupings (fragile, hazardous, temp-controlled) and a good partial solution may already have several groups correctly placed.
+
+**Use it because:**
+1. **Chromosome is long** — With 20 genes, single-point only mixes one region. Two cut points give much better coverage across the full chromosome.
+2. **Grouped constraints exist** — Products have natural groupings. Two-point preserves these groups better since it only cuts at 2 points instead of disrupting every gene.
+3. **Protects good building blocks** — If a parent has found a good partial solution (e.g. all hazardous items in Z5), two-point is less likely to break it compared to uniform crossover.
+4. **Balanced mixing** — Two-point swaps a middle segment between parents, so both the start and end of the chromosome also get preserved, giving a good balance between exploration and preservation.
+
+---
+
+## 3. Uniform Crossover
+
+For **each gene position**, flip a coin. Heads = take from Parent1, Tails = take from Parent2.
+
+```
+Parent1: [1, 3, 5, 2, 4, 6, 7, 8, 2, 3, 4, 5, 1, 2, 6, 7, 3, 8, 2, 1]
+Parent2: [3, 5, 2, 4, 6, 7, 8, 2, 3, 4, 5, 1, 2, 6, 7, 3, 8, 2, 1, 4]
+Mask:    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
+          P1 P2 P1 P2 P1 P2 P1 P2 ...
+
+Child1:  [1, 5, 5, 4, 4, 7, 7, 2, 2, 4, 4, 1, 1, 6, 6, 3, 3, 2, 2, 4]
+Child2:  [3, 3, 2, 2, 6, 6, 8, 8, 3, 3, 5, 5, 2, 2, 7, 7, 8, 8, 1, 1]
+```
+
+**Pros:**
+- Maximum gene mixing
+- Every gene has equal chance of coming from either parent
+- Best diversity
+
+**Cons:**
+- Can destroy good "building blocks" (groups of genes that work well together)
+- Too much disruption can slow convergence
+- For constrained problems, this can be harmful
+
+### When to Use It:
+**Scenario:** You are optimizing a 100-gene chromosome for a feature selection problem in machine learning, where each gene independently represents whether a feature is included (1) or excluded (0). There are no groupings or dependencies between genes.
+
+**Use it because:**
+1. **Chromosome is very long** — With 100 genes, single-point and two-point only mix small regions. Uniform crossover ensures every gene position has an equal chance of being mixed.
+2. **Genes are fully independent** — Since each feature selection decision is independent from others, randomly mixing every gene does not break any structure or grouping.
+3. **Maximum diversity needed** — Feature selection search spaces are huge. Uniform crossover produces the most diverse offspring which helps explore the space thoroughly.
+4. **No building blocks to protect** — Unlike constrained problems, there are no "good groups" that can be destroyed by per-gene randomness.
+
+---
+
+## Side by Side Comparison
+
+| Feature | Single-Point | Two-Point | Uniform |
+|---|---|---|---|
+| Implementation | Easiest | Easy | Medium |
+| Gene Mixing | Low | Medium | Maximum |
+| Diversity | Low | Good | Very High |
+| Preserves building blocks | High | Medium | Low |
+| Best for short chromosomes | ✅ | ✅ | ✅ |
+| Best for long chromosomes | ❌ | ✅ | ✅ |
+| Risk of disruption | Low | Low | High |
+
+---

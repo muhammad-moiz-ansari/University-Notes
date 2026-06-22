@@ -1,0 +1,332 @@
+
+<style>
+  .nav-btn{cursor:pointer;padding:8px 18px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-size:14px;}
+  .nav-btn:hover{background:var(--color-background-secondary);}
+  .nav-btn:disabled{opacity:0.35;cursor:default;}
+  .tag{display:inline-block;font-size:12px;padding:3px 10px;border-radius:var(--border-radius-md);margin-right:6px;margin-bottom:6px;}
+  .step-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin:0 3px;background:var(--color-border-secondary);}
+  .step-dot.active{background:#185FA5;}
+  .card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:12px;}
+  .section-label{font-size:12px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;}
+  .algo-step{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:0.5px solid var(--color-border-tertiary);}
+  .algo-step:last-child{border-bottom:none;}
+  .step-num{width:28px;height:28px;border-radius:50%;background:#E6F1FB;color:#185FA5;display:flex;align-items:center;justify-content:center;font-weight:500;font-size:14px;flex-shrink:0;}
+  .highlight{background:var(--color-background-info);color:var(--color-text-info);border-radius:4px;padding:2px 6px;font-size:13px;}
+  .formula{font-family:var(--font-mono);background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 14px;font-size:13px;color:var(--color-text-primary);margin:8px 0;}
+</style>
+
+<div style="padding:1rem 0;">
+<h2 class="sr-only">Interactive explainer: Cluster Analysis slides 11 to 20</h2>
+
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
+  <span id="slide-counter" style="font-size:13px;color:var(--color-text-secondary);">Slide 11 of 20</span>
+  <div style="display:flex;gap:8px;">
+    <button class="nav-btn" id="prev-btn" onclick="move(-1)" disabled>← Prev</button>
+    <button class="nav-btn" id="next-btn" onclick="move(1)">Next →</button>
+  </div>
+</div>
+
+<div id="dots" style="text-align:center;margin-bottom:1.5rem;"></div>
+<div id="slide-content"></div>
+</div>
+
+<script>
+const slides = [
+  {
+    title:"Dendrograms — reading the tree",
+    badge:"Hierarchical",badgeColor:"#E6F1FB",badgeText:"#0C447C",
+    body:`
+      <p style="font-size:15px;color:var(--color-text-primary);line-height:1.7;margin-bottom:1rem;">
+        While merging clusters one by one, we draw a tree diagram called a <strong style="font-weight:500">dendrogram</strong>. It records the entire history of merges and lets you extract any number of clusters without rerunning anything.
+      </p>
+      <div class="card">
+        <div class="section-label">How to read a dendrogram</div>
+        <p style="font-size:14px;color:var(--color-text-primary);line-height:1.7;margin:0 0 8px;">Each leaf at the bottom is one data point. As you move up, branches join where clusters merged. The <span class="highlight">height of a join</span> reflects how far apart those clusters were when they merged — taller = merged later = less similar.</p>
+      </div>
+      <div class="card">
+        <div class="section-label">Extracting K clusters — just cut the tree</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <div style="background:#E6F1FB;color:#0C447C;border-radius:var(--border-radius-md);padding:10px 14px;font-size:13px;flex:1;min-width:140px;">
+            <strong style="font-weight:500">Want 2 clusters?</strong><br>Cut the top 1 link<br>→ {q,r} and {x,y,z,p}
+          </div>
+          <div style="background:#E1F5EE;color:#085041;border-radius:var(--border-radius-md);padding:10px 14px;font-size:13px;flex:1;min-width:140px;">
+            <strong style="font-weight:500">Want 3 clusters?</strong><br>Cut the top 2 links<br>→ {q,r}, {x,y,z}, {p}
+          </div>
+        </div>
+      </div>
+      <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;margin-top:8px;">
+        <line x1="60" y1="160" x2="60" y2="110" stroke="#378ADD" stroke-width="1.5"/>
+        <line x1="120" y1="160" x2="120" y2="80" stroke="#378ADD" stroke-width="1.5"/>
+        <line x1="180" y1="160" x2="180" y2="80" stroke="#378ADD" stroke-width="1.5"/>
+        <line x1="120" y1="80" x2="180" y2="80" stroke="#378ADD" stroke-width="1.5"/>
+        <line x1="150" y1="80" x2="150" y2="55" stroke="#378ADD" stroke-width="1.5"/>
+        <line x1="260" y1="160" x2="260" y2="110" stroke="#378ADD" stroke-width="1.5"/>
+        <line x1="60" y1="110" x2="260" y2="110" stroke="#378ADD" stroke-width="1.5"/>
+        <line x1="160" y1="110" x2="160" y2="55" stroke="#378ADD" stroke-width="1.5"/>
+        <line x1="320" y1="160" x2="320" y2="100" stroke="#378ADD" stroke-width="1.5"/>
+        <line x1="360" y1="160" x2="360" y2="100" stroke="#378ADD" stroke-width="1.5"/>
+        <line x1="320" y1="100" x2="360" y2="100" stroke="#378ADD" stroke-width="1.5"/>
+        <line x1="340" y1="100" x2="340" y2="55" stroke="#378ADD" stroke-width="1.5"/>
+        <line x1="160" y1="55" x2="340" y2="55" stroke="#378ADD" stroke-width="1.5"/>
+        <line x1="250" y1="55" x2="250" y2="30" stroke="#378ADD" stroke-width="1.5"/>
+        <text x="60" y="175" text-anchor="middle" font-size="13" fill="#185FA5">x</text>
+        <text x="120" y="175" text-anchor="middle" font-size="13" fill="#185FA5">y</text>
+        <text x="180" y="175" text-anchor="middle" font-size="13" fill="#185FA5">z</text>
+        <text x="260" y="175" text-anchor="middle" font-size="13" fill="#185FA5">p</text>
+        <text x="320" y="175" text-anchor="middle" font-size="13" fill="#185FA5">q</text>
+        <text x="360" y="175" text-anchor="middle" font-size="13" fill="#185FA5">r</text>
+        <line x1="20" y1="55" x2="390" y2="55" stroke="#E24B4A" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="22" y="50" font-size="11" fill="#A32D2D">cut for 2 clusters</text>
+      </svg>`
+  },
+  {
+    title:"Hierarchical clustering algorithm",
+    badge:"Algorithm",badgeColor:"#E6F1FB",badgeText:"#0C447C",
+    body:`
+      <p style="font-size:15px;color:var(--color-text-primary);line-height:1.7;margin-bottom:1rem;">
+        The formal step-by-step procedure, given N items to cluster:
+      </p>
+      ${[
+        ["1","Initialise","Assign each item to its own cluster — N items means N clusters to start."],
+        ["2","Find closest pair","Find the two clusters with the smallest distance and merge them. Now you have N−1 clusters."],
+        ["3","Recompute distances","Calculate distances between the new merged cluster and all remaining clusters."],
+        ["4","Repeat","Go back to step 2. Keep merging until one single cluster of size N remains."],
+        ["5","Draw & cut","Draw the dendrogram. To get K clusters, cut the K−1 top-most links."],
+      ].map(([n,label,desc])=>`
+        <div class="algo-step">
+          <div class="step-num">${n}</div>
+          <div>
+            <p style="font-weight:500;font-size:14px;margin:0 0 3px;color:var(--color-text-primary);">${label}</p>
+            <p style="font-size:13px;color:var(--color-text-secondary);margin:0;line-height:1.5;">${desc}</p>
+          </div>
+        </div>`).join('')}
+      <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px 16px;margin-top:12px;">
+        <p style="font-size:13px;color:var(--color-text-secondary);margin:0;line-height:1.6;"><i class="ti ti-ruler" aria-hidden="true" style="font-size:16px;vertical-align:-2px;margin-right:6px;"></i>Any distance measure works here — Euclidean, Manhattan, cosine, etc. The choice affects the shape of clusters you discover.</p>
+      </div>`
+  },
+  {
+    title:"Three linkage methods for step 3",
+    badge:"Linkage",badgeColor:"#EEEDFE",badgeText:"#3C3489",
+    body:`
+      <p style="font-size:15px;color:var(--color-text-primary);line-height:1.7;margin-bottom:1rem;">
+        When two clusters are merged, how do you compute the distance from the new cluster to the others? There are three common answers.
+      </p>
+      ${[
+        ["Single-linkage","#E1F5EE","#085041","Shortest distance between any member of one cluster and any member of the other. Tends to create long chain-like clusters.","dist(A,B) = min distance between any point in A and any point in B"],
+        ["Complete-linkage","#FAECE7","#712B13","Greatest distance between any member of one cluster and any member of the other. Tends to create compact, evenly-sized clusters.","dist(A,B) = max distance between any point in A and any point in B"],
+        ["Centroid linkage","#EEEDFE","#3C3489","Distance between the centroid (mean) of one cluster and the centroid of the other. A balanced middle ground.","dist(A,B) = distance between centroid of A and centroid of B"],
+      ].map(([name,bg,col,desc,formula])=>`
+        <div class="card" style="border-left:3px solid ${col};border-radius:0 var(--border-radius-lg) var(--border-radius-lg) 0;">
+          <p style="font-weight:500;font-size:14px;margin:0 0 4px;color:var(--color-text-primary);">${name}</p>
+          <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 8px;line-height:1.5;">${desc}</p>
+          <div class="formula">${formula}</div>
+        </div>`).join('')}`
+  },
+  {
+    title:"Hierarchical clustering — worked example (part 1)",
+    badge:"Example",badgeColor:"#E1F5EE",badgeText:"#085041",
+    body:`
+      <p style="font-size:15px;color:var(--color-text-primary);line-height:1.7;margin-bottom:1rem;">
+        Data: X = [3, 7, 10, 17, 18, 20]. Using Manhattan distance and single-linkage.
+      </p>
+      <div class="card">
+        <div class="section-label">Step 1 — 6 items, 6 initial clusters</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          ${[3,7,10,17,18,20].map(v=>`<div style="width:36px;height:36px;border-radius:50%;background:#E6F1FB;color:#0C447C;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;">${v}</div>`).join('')}
+        </div>
+      </div>
+      <div class="card">
+        <div class="section-label">Step 2 — find closest pair</div>
+        <p style="font-size:14px;color:var(--color-text-primary);line-height:1.5;margin:0 0 8px;">Compute all pairwise Manhattan distances. The smallest is |17−18| = 1, so merge {17} and {18} first.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          ${[3,7,10,20].map(v=>`<div style="width:36px;height:36px;border-radius:50%;background:#E6F1FB;color:#0C447C;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;">${v}</div>`).join('')}
+          <div style="background:#E1F5EE;color:#085041;border-radius:20px;padding:6px 14px;font-size:13px;font-weight:500;">17, 18</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="section-label">Step 3 — repeat (single-linkage)</div>
+        <p style="font-size:14px;color:var(--color-text-primary);line-height:1.5;margin:0;">Next closest: cluster {17,18} to {20}. Single-linkage distance = |18−20| = 2. Merge them → {17,18,20}.</p>
+      </div>`
+  },
+  {
+    title:"Hierarchical clustering — worked example (part 2)",
+    badge:"Example",badgeColor:"#E1F5EE",badgeText:"#085041",
+    body:`
+      <p style="font-size:15px;color:var(--color-text-primary);line-height:1.7;margin-bottom:1rem;">
+        Continuing the merges until one cluster remains, then drawing the dendrogram.
+      </p>
+      <div class="card">
+        <div class="section-label">Merge sequence</div>
+        ${[
+          ["Iteration 1","{17} + {18}","distance = 1"],
+          ["Iteration 2","{17,18} + {20}","distance = 2 (|18−20|)"],
+          ["Iteration 3","{7} + {10}","distance = 3"],
+          ["Iteration 4","{3} + {7,10}","distance = 4 (|3−7|, single-link)"],
+          ["Iteration 5","{3,7,10} + {17,18,20}","distance = 7 (|10−17|)"],
+        ].map(([it,merge,dist])=>`
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary);">
+            <span style="font-size:12px;color:var(--color-text-tertiary);min-width:80px;">${it}</span>
+            <span style="font-size:13px;color:var(--color-text-primary);">${merge}</span>
+            <span style="font-size:12px;background:#E6F1FB;color:#0C447C;padding:2px 8px;border-radius:4px;">${dist}</span>
+          </div>`).join('')}
+      </div>
+      <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px 16px;">
+        <p style="font-size:13px;color:var(--color-text-secondary);margin:0;line-height:1.6;"><i class="ti ti-binary-tree" aria-hidden="true" style="font-size:16px;vertical-align:-2px;margin-right:6px;"></i>The dendrogram is drawn in reverse — the final merge (all together) is at the very top. The height of each horizontal bar corresponds to the distance at which that merge happened.</p>
+      </div>`
+  },
+  {
+    title:"Agglomerative vs K-means — comparison",
+    badge:"Comparison",badgeColor:"#FAEEDA",badgeText:"#633806",
+    body:`
+      <p style="font-size:15px;color:var(--color-text-primary);line-height:1.7;margin-bottom:1rem;">
+        Both methods find clusters, but they work very differently and suit different situations.
+      </p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem;">
+        <div style="background:#E1F5EE;border-radius:var(--border-radius-lg);padding:1rem;">
+          <p style="font-weight:500;font-size:14px;color:#085041;margin:0 0 10px;">Agglomerative</p>
+          <p style="font-size:13px;color:#085041;margin:0 0 6px;line-height:1.5;">+ No need to specify K in advance</p>
+          <p style="font-size:13px;color:#085041;margin:0 0 6px;line-height:1.5;">+ One unique answer (deterministic)</p>
+          <p style="font-size:13px;color:#085041;margin:0 0 6px;line-height:1.5;">+ Richer information from dendrogram</p>
+          <p style="font-size:13px;color:#085041;margin:0 0 6px;line-height:1.5;">+ Change K without rerunning</p>
+          <p style="font-size:13px;color:#791F1F;margin:0 0 6px;line-height:1.5;">− Slower than K-means</p>
+          <p style="font-size:13px;color:#791F1F;margin:0;line-height:1.5;">− No backtracking — merges are permanent</p>
+        </div>
+        <div style="background:#EEEDFE;border-radius:var(--border-radius-lg);padding:1rem;">
+          <p style="font-weight:500;font-size:14px;color:#3C3489;margin:0 0 10px;">K-means</p>
+          <p style="font-size:13px;color:#3C3489;margin:0 0 6px;line-height:1.5;">+ Faster and more scalable</p>
+          <p style="font-size:13px;color:#3C3489;margin:0 0 6px;line-height:1.5;">+ Works well on large datasets</p>
+          <p style="font-size:13px;color:#791F1F;margin:0 0 6px;line-height:1.5;">− Must specify K beforehand</p>
+          <p style="font-size:13px;color:#791F1F;margin:0 0 6px;line-height:1.5;">− Different K → must redo everything</p>
+          <p style="font-size:13px;color:#791F1F;margin:0 0 6px;line-height:1.5;">− Sensitive to initial centroid choice</p>
+          <p style="font-size:13px;color:#791F1F;margin:0;line-height:1.5;">− May converge to local optimum</p>
+        </div>
+      </div>`
+  },
+  {
+    title:"Clustering validity — the two problems",
+    badge:"Quality",badgeColor:"#FAECE7",badgeText:"#712B13",
+    body:`
+      <p style="font-size:15px;color:var(--color-text-primary);line-height:1.7;margin-bottom:1rem;">
+        After clustering, two hard questions remain.
+      </p>
+      <div class="card" style="border-left:3px solid #D85A30;border-radius:0 var(--border-radius-lg) var(--border-radius-lg) 0;">
+        <p style="font-weight:500;font-size:14px;margin:0 0 4px;color:var(--color-text-primary);">Problem 1 — how many clusters?</p>
+        <p style="font-size:13px;color:var(--color-text-secondary);margin:0;line-height:1.5;">What is the right K for this data? Too few clusters merge distinct groups; too many split natural groups apart.</p>
+      </div>
+      <div class="card" style="border-left:3px solid #D85A30;border-radius:0 var(--border-radius-lg) var(--border-radius-lg) 0;">
+        <p style="font-weight:500;font-size:14px;margin:0 0 4px;color:var(--color-text-primary);">Problem 2 — which method is better?</p>
+        <p style="font-size:13px;color:var(--color-text-secondary);margin:0;line-height:1.5;">Different algorithms (and different K values, or different initial centroids) produce different results. We need an objective quality score to compare them.</p>
+      </div>
+      <div class="card">
+        <div class="section-label">What makes a good cluster?</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <div style="background:#E1F5EE;color:#085041;border-radius:var(--border-radius-md);padding:10px 14px;font-size:13px;flex:1;min-width:130px;">
+            <strong style="font-weight:500">High intra-cluster similarity</strong><br>Points inside the same cluster should be close to each other → low variance within clusters
+          </div>
+          <div style="background:#FAECE7;color:#712B13;border-radius:var(--border-radius-md);padding:10px 14px;font-size:13px;flex:1;min-width:130px;">
+            <strong style="font-weight:500">Low inter-cluster similarity</strong><br>Different clusters should be far apart → high variance between clusters
+          </div>
+        </div>
+      </div>`
+  },
+  {
+    title:"Intra-cluster variance",
+    badge:"Quality",badgeColor:"#FAECE7",badgeText:"#712B13",
+    body:`
+      <p style="font-size:15px;color:var(--color-text-primary);line-height:1.7;margin-bottom:1rem;">
+        The simplest measure of cluster quality is the <strong style="font-weight:500">variance</strong> of points within a cluster. Lower variance = tighter, better cluster.
+      </p>
+      <div class="card">
+        <div class="section-label">Variance formula</div>
+        <div class="formula">var(x) = (1 / N−1) × Σ (xᵢ − x̄)²</div>
+        <p style="font-size:13px;color:var(--color-text-secondary);margin:8px 0 0;line-height:1.5;">where x̄ is the mean of x, and N is the number of points in the cluster.</p>
+      </div>
+      <div class="card">
+        <div class="section-label">Quick example — x = [2, 4, 6, 8]</div>
+        <p style="font-size:13px;color:var(--color-text-primary);line-height:1.5;margin:0 0 6px;">Mean = 5. Differences: (2−5)²=9, (4−5)²=1, (6−5)²=1, (8−5)²=9. Sum=20. var = 20/3 ≈ 6.67</p>
+      </div>
+      <div class="card">
+        <div class="section-label">Comparing two clusters from our example</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <div style="background:#E1F5EE;color:#085041;border-radius:var(--border-radius-md);padding:10px 14px;font-size:13px;flex:1;">
+            <strong style="font-weight:500">Cluster 1:</strong> {3, 7, 10}<br>var = 2.33 ✓ tighter
+          </div>
+          <div style="background:#FCEBEB;color:#791F1F;border-radius:var(--border-radius-md);padding:10px 14px;font-size:13px;flex:1;">
+            <strong style="font-weight:500">Cluster 2:</strong> {17, 18, 20}<br>var = 12.33 — more spread
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--color-text-secondary);margin:10px 0 0;line-height:1.5;">Cluster 1 is tighter, but intra-cluster variance alone doesn't tell us if the overall partition into K clusters is good — for that we need an inter-cluster measure too.</p>
+      </div>`
+  },
+  {
+    title:"Davies-Bouldin index — the formula",
+    badge:"DB Index",badgeColor:"#E6F1FB",badgeText:"#0C447C",
+    body:`
+      <p style="font-size:15px;color:var(--color-text-primary);line-height:1.7;margin-bottom:1rem;">
+        The Davies-Bouldin (DB) index combines both intra-cluster spread and inter-cluster separation into one number. <span class="highlight">Lower DB = better clustering.</span>
+      </p>
+      <div class="card">
+        <div class="section-label">Step 1 — compute Rᵢⱼ for every pair of clusters</div>
+        <div class="formula">Rᵢⱼ = ( var(Cᵢ) + var(Cⱼ) ) / ‖cᵢ − cⱼ‖</div>
+        <p style="font-size:13px;color:var(--color-text-secondary);margin:8px 0 0;line-height:1.5;">Numerator = sum of within-cluster spreads. Denominator = distance between centroids. A high Rᵢⱼ means clusters are spread out AND close together — bad.</p>
+      </div>
+      <div class="card">
+        <div class="section-label">Step 2 — for each cluster i, take the worst-case Rᵢⱼ</div>
+        <div class="formula">Rᵢ = max over all j≠i of Rᵢⱼ</div>
+        <p style="font-size:13px;color:var(--color-text-secondary);margin:8px 0 0;line-height:1.5;">This picks the most "confusable" neighbour for each cluster.</p>
+      </div>
+      <div class="card">
+        <div class="section-label">Step 3 — average over all clusters</div>
+        <div class="formula">DB = (1/K) × Σ Rᵢ</div>
+        <p style="font-size:13px;color:var(--color-text-secondary);margin:8px 0 0;line-height:1.5;">Run this for K = 2, 3, 4, … N−1. The K with the smallest DB index is your best number of clusters.</p>
+      </div>`
+  },
+  {
+    title:"Davies-Bouldin index — worked example",
+    badge:"DB Index",badgeColor:"#E6F1FB",badgeText:"#0C447C",
+    body:`
+      <p style="font-size:15px;color:var(--color-text-primary);line-height:1.7;margin-bottom:1rem;">
+        Using the same data X = [3, 7, 10, 17, 18, 20], comparing K=3 vs K=2.
+      </p>
+      <div class="card">
+        <div class="section-label">K = 3 clusters: {3}, {7,10}, {17,18,20}</div>
+        <p style="font-size:13px;color:var(--color-text-primary);line-height:1.6;margin:0 0 6px;">var(C₁)=0, var(C₂)=4.5, var(C₃)=2.33 &nbsp;|&nbsp; centroids: c₁=3, c₂=8.5, c₃=18.33</p>
+        <p style="font-size:13px;color:var(--color-text-primary);line-height:1.6;margin:0 0 6px;">R₁₂=(0+4.5)/|3−8.5|=0.82 &nbsp;|&nbsp; R₁₃=(0+2.33)/15.33=0.15 &nbsp;|&nbsp; R₂₃=(4.5+2.33)/9.83=0.69</p>
+        <p style="font-size:13px;color:var(--color-text-primary);line-height:1.6;margin:0 0 6px;">R₁=max(0.82,0.15)=0.82 &nbsp;|&nbsp; R₂=max(0.82,0.69)=0.82 &nbsp;|&nbsp; R₃=max(0.15,0.69)=0.69</p>
+        <div style="background:#E1F5EE;color:#085041;border-radius:var(--border-radius-md);padding:8px 14px;font-size:14px;font-weight:500;margin-top:6px;">DB (K=3) = (0.82+0.82+0.69)/3 ≈ 0.78</div>
+      </div>
+      <div class="card">
+        <div class="section-label">K = 2 clusters: {3,7,10}, {17,18,20}</div>
+        <p style="font-size:13px;color:var(--color-text-primary);line-height:1.6;margin:0 0 6px;">var(C₁)=12.33, var(C₂)=2.33 &nbsp;|&nbsp; centroids: c₁=6.67, c₂=18.33</p>
+        <p style="font-size:13px;color:var(--color-text-primary);line-height:1.6;margin:0 0 6px;">R₁₂=(12.33+2.33)/|6.67−18.33|=14.66/11.66=1.26</p>
+        <div style="background:#FCEBEB;color:#791F1F;border-radius:var(--border-radius-md);padding:8px 14px;font-size:14px;font-weight:500;margin-top:6px;">DB (K=2) = 1.26 — worse (higher)</div>
+      </div>
+      <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px 16px;">
+        <p style="font-size:13px;color:var(--color-text-secondary);margin:0;line-height:1.6;"><i class="ti ti-trophy" aria-hidden="true" style="font-size:16px;vertical-align:-2px;margin-right:6px;"></i><strong style="font-weight:500">Verdict:</strong> K=3 (DB≈0.78) beats K=2 (DB=1.26). In practice, compute DB for all K from 2 to N−1 and pick the minimum.</p>
+      </div>`
+  }
+];
+
+let current = 0;
+
+function renderDots(){
+  document.getElementById('dots').innerHTML = slides.map((_,i)=>`<span class="step-dot ${i===current?'active':''}"></span>`).join('');
+}
+
+function render(){
+  const s = slides[current];
+  document.getElementById('slide-counter').textContent = `Slide ${current+11} of 20`;
+  document.getElementById('prev-btn').disabled = current===0;
+  document.getElementById('next-btn').disabled = current===slides.length-1;
+  renderDots();
+  document.getElementById('slide-content').innerHTML = `
+    <div style="margin-bottom:1.5rem;">
+      <span class="tag" style="background:${s.badgeColor};color:${s.badgeText};">${s.badge}</span>
+    </div>
+    <h2 style="font-size:22px;font-weight:500;margin:0 0 1.25rem;color:var(--color-text-primary);">${s.title}</h2>
+    ${s.body}`;
+}
+
+function move(dir){ current=Math.max(0,Math.min(slides.length-1,current+dir)); render(); }
+render();
+</script>

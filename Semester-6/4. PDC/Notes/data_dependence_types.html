@@ -1,0 +1,227 @@
+
+<h2 class="sr-only">Interactive guide to the four types of data dependence: true, anti, output, and input</h2>
+
+<style>
+.tab-bar { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.tab-btn {
+  padding: 8px 16px; font-size: 14px; border-radius: var(--border-radius-md);
+  border: 0.5px solid var(--color-border-secondary); cursor: pointer;
+  background: var(--color-background-secondary); color: var(--color-text-secondary);
+  transition: all 0.15s;
+}
+.tab-btn.active {
+  background: var(--color-background-primary); color: var(--color-text-primary);
+  border-color: var(--color-border-primary); font-weight: 500;
+}
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.section-card {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+.section-label {
+  font-size: 12px; font-weight: 500; letter-spacing: 0.04em;
+  color: var(--color-text-secondary); text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.dep-badge {
+  display: inline-block; font-size: 12px; padding: 3px 10px;
+  border-radius: var(--border-radius-md); font-weight: 500; margin-bottom: 0.75rem;
+}
+code, pre {
+  font-family: var(--font-mono); font-size: 13px;
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-md);
+}
+pre { padding: 0.75rem 1rem; margin: 0; overflow-x: auto; line-height: 1.6; }
+.inline-code { padding: 1px 6px; }
+.arrow-row {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--color-text-secondary);
+  margin: 0.5rem 0;
+}
+.arrow-row i { font-size: 16px; }
+.removable-badge {
+  font-size: 12px; padding: 3px 10px; border-radius: var(--border-radius-md);
+  font-weight: 500;
+}
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 500px) { .two-col { grid-template-columns: 1fr; } }
+</style>
+
+<div style="padding: 1rem 0 0;">
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('true')">True / Flow</button>
+  <button class="tab-btn" onclick="showTab('anti')">Anti</button>
+  <button class="tab-btn" onclick="showTab('output')">Output</button>
+  <button class="tab-btn" onclick="showTab('input')">Input</button>
+</div>
+
+<div id="tab-true" class="tab-panel active">
+  <div class="section-card">
+    <div class="section-label">What is it?</div>
+    <p style="font-size:15px; margin:0 0 0.5rem;">A true (or flow) dependence exists when one statement <strong style="font-weight:500">writes</strong> a value and a later statement <strong style="font-weight:500">reads</strong> it. The data literally flows from producer to consumer — this is a real, meaningful constraint.</p>
+    <span class="dep-badge" style="background:var(--color-background-danger); color:var(--color-text-danger);">Write → Read &nbsp;·&nbsp; S1 δ S2</span>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Example</div>
+    <pre>S1:  a = 5        <span style="color:var(--color-text-success)">! writes a</span>
+S2:  b = a + 1    <span style="color:var(--color-text-danger)">! reads a  ← depends on S1</span></pre>
+    <div class="arrow-row" style="margin-top:0.75rem;">
+      <i class="ti ti-arrow-right" aria-hidden="true"></i>
+      S2 must execute after S1. Moving S2 before S1 would read an uninitialized or stale value.
+    </div>
+    <p style="font-size:13px; color:var(--color-text-secondary); margin:0.5rem 0 0;">In a loop context:</p>
+    <pre style="margin-top:0.5rem">DO I = 1, N
+  S1:  A(I+1) = B(I) + 1   <span style="color:var(--color-text-success)">! writes A(I+1)</span>
+  S2:  C(I)  = A(I)         <span style="color:var(--color-text-danger)">! reads A(I)</span>
+ENDDO
+<span style="color:var(--color-text-secondary)">! S1 on iteration i writes A(i+1)
+! S2 on iteration i+1 reads A(i+1)  → loop-carried true dep</span></pre>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Can it be removed?</div>
+    <span class="removable-badge" style="background:var(--color-background-danger); color:var(--color-text-danger);">Cannot be eliminated</span>
+    <p style="font-size:14px; margin:0.75rem 0 0; color:var(--color-text-secondary);">True dependences represent actual data flow — the ordering is real and necessary. You cannot remove it without changing the program's meaning. You can only work around it (e.g. by restructuring the algorithm).</p>
+  </div>
+</div>
+
+<div id="tab-anti" class="tab-panel">
+  <div class="section-card">
+    <div class="section-label">What is it?</div>
+    <p style="font-size:15px; margin:0 0 0.5rem;">An anti-dependence is the reverse — one statement <strong style="font-weight:500">reads</strong> a variable and a later statement <strong style="font-weight:500">writes</strong> to it. The second statement must not write too early, or the first would read the wrong (new) value.</p>
+    <span class="dep-badge" style="background:var(--color-background-warning); color:var(--color-text-warning);">Read → Write &nbsp;·&nbsp; S1 δ⁻¹ S2</span>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Example</div>
+    <pre>S1:  b = a + 1    <span style="color:var(--color-text-success)">! reads a</span>
+S2:  a = 5        <span style="color:var(--color-text-danger)">! writes a  ← anti-dep on S1</span></pre>
+    <div class="arrow-row" style="margin-top:0.75rem;">
+      <i class="ti ti-arrow-right" aria-hidden="true"></i>
+      If S2 ran first, S1 would read the new value of a (5) instead of the original. Order must be preserved.
+    </div>
+    <p style="font-size:13px; color:var(--color-text-secondary); margin:0.5rem 0 0;">In a loop context:</p>
+    <pre style="margin-top:0.5rem">DO I = 1, N
+  S1:  A(I)   = ... <span style="color:var(--color-text-success)">! reads  (right-hand side)</span>
+  S2:  A(I+1) = ... <span style="color:var(--color-text-danger)">! writes A(I+1)</span>
+ENDDO
+<span style="color:var(--color-text-secondary)">! S1 on iteration i+1 reads A(i+1)
+! S2 on iteration i  writes A(i+1)  → anti-dependence</span></pre>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">How to remove it</div>
+    <span class="removable-badge" style="background:var(--color-background-success); color:var(--color-text-success);">Can be eliminated via renaming</span>
+    <p style="font-size:14px; margin:0.75rem 0 0.5rem; color:var(--color-text-secondary);">Introduce a new variable (rename) so the two statements no longer touch the same location:</p>
+    <div class="two-col">
+      <div>
+        <div class="section-label">Before</div>
+        <pre>DO I = 1, N
+  A(I) = A(I+1)
+ENDDO</pre>
+      </div>
+      <div>
+        <div class="section-label">After (renaming)</div>
+        <pre>DO I = 1, N
+  A2(I) = A(I)
+ENDDO
+DO I = 1, N
+  A(I) = A2(I+1)
+ENDDO</pre>
+      </div>
+    </div>
+    <p style="font-size:13px; color:var(--color-text-secondary); margin:0.5rem 0 0;">Now the read and write target different arrays — no conflict, loop can be parallelized.</p>
+  </div>
+</div>
+
+<div id="tab-output" class="tab-panel">
+  <div class="section-card">
+    <div class="section-label">What is it?</div>
+    <p style="font-size:15px; margin:0 0 0.5rem;">An output dependence occurs when two statements both <strong style="font-weight:500">write</strong> to the same location. The last write must win — so their order matters.</p>
+    <span class="dep-badge" style="background:var(--color-background-info); color:var(--color-text-info);">Write → Write &nbsp;·&nbsp; S1 δ⁰ S2</span>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Example</div>
+    <pre>S1:  a = 3    <span style="color:var(--color-text-success)">! writes a</span>
+S2:  a = 7    <span style="color:var(--color-text-danger)">! writes a again ← output dep on S1</span>
+S3:  b = a    <span style="color:var(--color-text-secondary)">! reads a — must get 7, not 3</span></pre>
+    <div class="arrow-row" style="margin-top:0.75rem;">
+      <i class="ti ti-arrow-right" aria-hidden="true"></i>
+      If S2 ran before S1, then after both execute, a = 3 instead of 7. Any later read gets the wrong value.
+    </div>
+    <p style="font-size:13px; color:var(--color-text-secondary); margin:0.5rem 0 0;">In a loop context:</p>
+    <pre style="margin-top:0.5rem">DO I = 1, N
+  S1:  A(1) = B(I)   <span style="color:var(--color-text-danger)">! always writes A(1) — same location every iteration</span>
+ENDDO
+<span style="color:var(--color-text-secondary)">! Every iteration writes A(1) → output dependence across all iterations</span></pre>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">How to remove it</div>
+    <span class="removable-badge" style="background:var(--color-background-success); color:var(--color-text-success);">Can be eliminated via renaming</span>
+    <p style="font-size:14px; margin:0.75rem 0 0.5rem; color:var(--color-text-secondary);">Give each write its own unique destination, then merge at the end if needed:</p>
+    <div class="two-col">
+      <div>
+        <div class="section-label">Before</div>
+        <pre>S1:  a = 3
+S2:  a = 7
+S3:  b = a</pre>
+      </div>
+      <div>
+        <div class="section-label">After (renaming)</div>
+        <pre>S1:  a1 = 3
+S2:  a2 = 7
+S3:  b  = a2  <span style="color:var(--color-text-success)">! use last write</span></pre>
+      </div>
+    </div>
+    <p style="font-size:13px; color:var(--color-text-secondary); margin:0.5rem 0 0;">S1 and S2 now write to different variables — they can execute in any order or in parallel.</p>
+  </div>
+</div>
+
+<div id="tab-input" class="tab-panel">
+  <div class="section-card">
+    <div class="section-label">What is it?</div>
+    <p style="font-size:15px; margin:0 0 0.5rem;">An input dependence occurs when two statements both <strong style="font-weight:500">read</strong> from the same location. Since neither writes, there is no conflict — neither can corrupt the other's value.</p>
+    <span class="dep-badge" style="background:var(--color-background-secondary); color:var(--color-text-secondary);">Read → Read &nbsp;·&nbsp; (not a true dependence)</span>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Example</div>
+    <pre>S1:  b = a + 1    <span style="color:var(--color-text-success)">! reads a</span>
+S2:  c = a * 2    <span style="color:var(--color-text-success)">! reads a</span></pre>
+    <div class="arrow-row" style="margin-top:0.75rem;">
+      <i class="ti ti-arrow-right" aria-hidden="true"></i>
+      Both read the same value. No matter what order they run in, both get the correct value of a.
+    </div>
+    <p style="font-size:13px; color:var(--color-text-secondary); margin:0.5rem 0 0;">In a loop context:</p>
+    <pre style="margin-top:0.5rem">DO I = 1, N
+  S1:  b = a + I
+  S2:  c = a * I    <span style="color:var(--color-text-success)">! both just read a — no conflict</span>
+ENDDO</pre>
+  </div>
+
+  <div class="section-card">
+    <div class="section-label">Does it need to be removed?</div>
+    <span class="removable-badge" style="background:var(--color-background-success); color:var(--color-text-success);">No action needed — already safe</span>
+    <p style="font-size:14px; margin:0.75rem 0 0; color:var(--color-text-secondary);">Input dependences place no ordering constraint on execution. Both statements can run simultaneously without any risk. The only concern is cache performance — two reads to the same location is actually good for locality. No removal needed.</p>
+  </div>
+</div>
+
+</div>
+
+<script>
+function showTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>

@@ -1,0 +1,304 @@
+
+<style>
+  .nav-btn { cursor:pointer; padding:8px 18px; border:0.5px solid var(--color-border-secondary); border-radius:var(--border-radius-md); background:var(--color-background-primary); color:var(--color-text-primary); font-size:14px; }
+  .nav-btn:hover { background:var(--color-background-secondary); }
+  .nav-btn:disabled { opacity:0.35; cursor:default; }
+  .tag { display:inline-block; font-size:12px; padding:3px 10px; border-radius:var(--border-radius-md); margin-right:6px; margin-bottom:6px; }
+  .step-dot { width:8px; height:8px; border-radius:50%; display:inline-block; margin:0 3px; background:var(--color-border-secondary); }
+  .step-dot.active { background:#534AB7; }
+  .card { background:var(--color-background-primary); border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); padding:1rem 1.25rem; margin-bottom:12px; }
+  .section-label { font-size:12px; font-weight:500; color:var(--color-text-tertiary); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px; }
+  .highlight { background:var(--color-background-info); color:var(--color-text-info); border-radius:4px; padding:2px 6px; font-size:13px; }
+  .algo-step { display:flex; gap:12px; align-items:flex-start; padding:10px 0; border-bottom:0.5px solid var(--color-border-tertiary); }
+  .algo-step:last-child { border-bottom:none; }
+  .step-num { width:28px; height:28px; border-radius:50%; background:#EEEDFE; color:#534AB7; display:flex; align-items:center; justify-content:center; font-weight:500; font-size:14px; flex-shrink:0; }
+</style>
+
+<div style="padding:1rem 0;">
+<h2 class="sr-only">Interactive explainer: Cluster Analysis – slides 1 to 10</h2>
+
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem;">
+  <div>
+    <span id="slide-counter" style="font-size:13px; color:var(--color-text-secondary);">Slide 1 of 10</span>
+  </div>
+  <div style="display:flex; gap:8px; align-items:center;">
+    <button class="nav-btn" id="prev-btn" onclick="move(-1)" disabled>← Prev</button>
+    <button class="nav-btn" id="next-btn" onclick="move(1)">Next →</button>
+  </div>
+</div>
+
+<div id="dots" style="text-align:center; margin-bottom:1.5rem;"></div>
+
+<div id="slide-content"></div>
+</div>
+
+<script>
+const slides = [
+  {
+    title: "What is clustering?",
+    badge: "Introduction",
+    badgeColor: "#EEEDFE",
+    badgeText: "#534AB7",
+    body: `
+      <p style="font-size:15px; color:var(--color-text-primary); line-height:1.7; margin-bottom:1rem;">
+        Clustering is <strong style="font-weight:500">unsupervised machine learning</strong> — you don't give the algorithm labels or correct answers. Instead, it discovers natural groupings on its own.
+      </p>
+      <div class="card">
+        <div class="section-label">Key idea</div>
+        <p style="margin:0; font-size:14px; color:var(--color-text-primary); line-height:1.7;">A <span class="highlight">cluster</span> is a group of objects that are similar to each other. Clustering is the process of finding these groups automatically from raw data.</p>
+      </div>
+      <div class="card">
+        <div class="section-label">Simple example</div>
+        <p style="margin:0; font-size:14px; color:var(--color-text-primary); line-height:1.7;">Group people by their height and weight. Tall heavy people form one cluster; short light people form another — without anyone manually assigning labels.</p>
+      </div>
+      <div class="card">
+        <div class="section-label">Two ways to measure similarity</div>
+        <p style="font-size:14px; color:var(--color-text-primary); line-height:1.7; margin:0 0 6px;"><strong style="font-weight:500">Distance-based:</strong> Objects are similar if they are geometrically close (Euclidean or Manhattan distance).</p>
+        <p style="font-size:14px; color:var(--color-text-primary); line-height:1.7; margin:0;"><strong style="font-weight:500">Conceptual:</strong> Objects are grouped because they share a common descriptive concept, not just proximity.</p>
+      </div>`
+  },
+  {
+    title: "Why is clustering hard?",
+    badge: "Motivation",
+    badgeColor: "#E1F5EE",
+    badgeText: "#0F6E56",
+    body: `
+      <p style="font-size:15px; color:var(--color-text-primary); line-height:1.7; margin-bottom:1rem;">
+        Even with the same data, different ways of drawing cluster boundaries can all look reasonable. There is <strong style="font-weight:500">no single "correct" answer</strong>.
+      </p>
+      <div class="card">
+        <div class="section-label">The core problem</div>
+        <p style="font-size:14px; color:var(--color-text-primary); line-height:1.7; margin:0;">Given the same scatter of points, you could draw 4 clusters in several valid-looking ways. Which grouping is best depends entirely on what you're trying to accomplish.</p>
+      </div>
+      <div class="card">
+        <div class="section-label">What this means in practice</div>
+        <p style="font-size:14px; color:var(--color-text-primary); line-height:1.7; margin:0;">There is no absolute best clustering criterion independent of the goal. <span class="highlight">The user must supply the criterion</span> based on the application's needs.</p>
+      </div>
+      <div style="background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:12px 16px;">
+        <p style="font-size:13px; color:var(--color-text-secondary); margin:0; line-height:1.6;"><i class="ti ti-bulb" aria-hidden="true" style="font-size:16px; vertical-align:-2px; margin-right:6px;"></i>Think of it like asking "which photo arrangement looks best?" — the answer depends on whether you're making a scrapbook, a portfolio, or an ID database.</p>
+      </div>`
+  },
+  {
+    title: "What is clustering used for?",
+    badge: "Applications",
+    badgeColor: "#FAEEDA",
+    badgeText: "#854F0B",
+    body: `
+      <p style="font-size:15px; color:var(--color-text-primary); line-height:1.7; margin-bottom:1rem;">Clustering has real-world uses across many fields.</p>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; margin-bottom:1rem;">
+        ${[
+          ["ti-leaf","Biology","Taxonomy — classifying species into kingdom, phylum, class, etc."],
+          ["ti-file-text","Information retrieval","Grouping similar documents together."],
+          ["ti-map","Land use","Identifying areas of similar land use from satellite data."],
+          ["ti-speakerphone","Marketing","Discovering distinct customer segments for targeted campaigns."],
+          ["ti-building","City planning","Grouping houses by type, value, and location."],
+          ["ti-wave-sine","Earthquake studies","Clustering epicenters to find continent fault lines."]
+        ].map(([icon,title,desc])=>`
+          <div class="card" style="margin:0;">
+            <i class="ti ${icon}" aria-hidden="true" style="font-size:20px; color:#534AB7; display:block; margin-bottom:6px;"></i>
+            <p style="font-weight:500; font-size:13px; margin:0 0 4px;">${title}</p>
+            <p style="font-size:12px; color:var(--color-text-secondary); margin:0; line-height:1.5;">${desc}</p>
+          </div>`).join('')}
+      </div>`
+  },
+  {
+    title: "Four major clustering approaches",
+    badge: "Taxonomy",
+    badgeColor: "#FAECE7",
+    badgeText: "#993C1D",
+    body: `
+      <p style="font-size:15px; color:var(--color-text-primary); line-height:1.7; margin-bottom:1rem;">Clustering algorithms fall into four broad families, each with different assumptions.</p>
+      ${[
+        ["Exclusive (partitioning)","#EEEDFE","#534AB7","Each data point belongs to exactly one cluster. Hard boundaries.","K-means"],
+        ["Agglomerative","#E1F5EE","#0F6E56","Start with each point as its own cluster, then merge the closest pairs iteratively.","Hierarchical clustering"],
+        ["Overlapping (fuzzy)","#FAEEDA","#854F0B","A point can belong to multiple clusters with different degrees of membership.","Fuzzy C-Means"],
+        ["Probabilistic","#E6F1FB","#185FA5","Uses probability distributions to assign cluster membership.","Gaussian Mixture Models"],
+      ].map(([name,bg,col,desc,eg])=>`
+        <div style="display:flex; gap:12px; align-items:flex-start; padding:10px 0; border-bottom:0.5px solid var(--color-border-tertiary);">
+          <div style="min-width:10px; height:10px; border-radius:50%; background:${col}; margin-top:6px;"></div>
+          <div>
+            <p style="font-weight:500; font-size:14px; margin:0 0 3px;">${name}</p>
+            <p style="font-size:13px; color:var(--color-text-secondary); margin:0 0 4px; line-height:1.5;">${desc}</p>
+            <span style="font-size:12px; background:${bg}; color:${col}; padding:2px 8px; border-radius:4px;">Example: ${eg}</span>
+          </div>
+        </div>`).join('')}`
+  },
+  {
+    title: "K-means: the idea",
+    badge: "Partitioning",
+    badgeColor: "#EEEDFE",
+    badgeText: "#534AB7",
+    body: `
+      <p style="font-size:15px; color:var(--color-text-primary); line-height:1.7; margin-bottom:1rem;">
+        K-means is the most common partitioning algorithm. You tell it how many clusters you want (<span class="highlight">K</span>), and it finds the best partition.
+      </p>
+      <div class="card">
+        <div class="section-label">Core concept</div>
+        <p style="font-size:14px; line-height:1.7; margin:0; color:var(--color-text-primary);">Each cluster is represented by its <strong style="font-weight:500">centroid</strong> — the average (mean) position of all points in that cluster. Points are assigned to the nearest centroid.</p>
+      </div>
+      <div class="card">
+        <div class="section-label">The 4-step algorithm</div>
+        ${[
+          ["1","Choose K random points as initial centroids"],
+          ["2","Assign every point to its nearest centroid (using Euclidean or Manhattan distance)"],
+          ["3","Recalculate each centroid as the mean of all points assigned to it"],
+          ["4","Repeat steps 2–3 until centroids stop moving"],
+        ].map(([n,t])=>`
+          <div class="algo-step">
+            <div class="step-num">${n}</div>
+            <p style="font-size:14px; margin:3px 0 0; color:var(--color-text-primary); line-height:1.5;">${t}</p>
+          </div>`).join('')}
+      </div>`
+  },
+  {
+    title: "K-means walkthrough – step 1",
+    badge: "Example",
+    badgeColor: "#E1F5EE",
+    badgeText: "#0F6E56",
+    body: `
+      <p style="font-size:15px; color:var(--color-text-primary); line-height:1.7; margin-bottom:1rem;">
+        Data: {20, 3, 9, 10, 9, 3, 1, 8, 5, 3, 24, 2, 14, 7, 8, 23, 6, 12, 18} — cluster into <span class="highlight">K = 3</span> groups using Manhattan distance.
+      </p>
+      <div class="card">
+        <div class="section-label">Step 1 — pick 3 random centroids</div>
+        <p style="font-size:14px; color:var(--color-text-primary); line-height:1.7; margin:0 0 12px;">Randomly select 3 points from the data as starting cluster centres. Here we pick <strong style="font-weight:500">6, 12, and 18</strong>.</p>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          ${[["C₁ = 6","#EEEDFE","#534AB7"],["C₂ = 12","#E1F5EE","#0F6E56"],["C₃ = 18","#FAEEDA","#854F0B"]].map(([label,bg,col])=>`
+            <div style="background:${bg}; color:${col}; border-radius:var(--border-radius-md); padding:10px 20px; font-size:16px; font-weight:500;">${label}</div>`).join('')}
+        </div>
+      </div>
+      <div style="background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:12px 16px;">
+        <p style="font-size:13px; color:var(--color-text-secondary); margin:0; line-height:1.6;"><i class="ti ti-info-circle" aria-hidden="true" style="font-size:16px; vertical-align:-2px; margin-right:6px;"></i><strong style="font-weight:500">Important:</strong> These are picked randomly. Different initial choices can lead to different final clusters — this is one of K-means' weaknesses.</p>
+      </div>`
+  },
+  {
+    title: "K-means walkthrough – step 2",
+    badge: "Example",
+    badgeColor: "#E1F5EE",
+    badgeText: "#0F6E56",
+    body: `
+      <p style="font-size:15px; color:var(--color-text-primary); line-height:1.7; margin-bottom:1rem;">
+        Assign each data point to its <strong style="font-weight:500">nearest centroid</strong> using Manhattan (absolute) distance.
+      </p>
+      <div class="card">
+        <div class="section-label">How it works for one point: 20</div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px;">
+          <div style="font-size:13px; background:#EEEDFE; color:#534AB7; padding:4px 10px; border-radius:4px;">|20−6| = 14 → C₁</div>
+          <div style="font-size:13px; background:#E1F5EE; color:#0F6E56; padding:4px 10px; border-radius:4px;">|20−12| = 8 → C₂</div>
+          <div style="font-size:13px; background:#FAEEDA; color:#854F0B; padding:4px 10px; border-radius:4px; font-weight:500;">|20−18| = 2 ✓ C₃ (nearest)</div>
+        </div>
+        <p style="font-size:13px; color:var(--color-text-secondary); margin:0;">So 20 is assigned to C₃.</p>
+      </div>
+      <div class="card">
+        <div class="section-label">Another point: 3</div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px;">
+          <div style="font-size:13px; background:#EEEDFE; color:#534AB7; padding:4px 10px; border-radius:4px; font-weight:500;">|3−6| = 3 ✓ C₁ (nearest)</div>
+          <div style="font-size:13px; background:#E1F5EE; color:#0F6E56; padding:4px 10px; border-radius:4px;">|3−12| = 9 → C₂</div>
+          <div style="font-size:13px; background:#FAEEDA; color:#854F0B; padding:4px 10px; border-radius:4px;">|3−18| = 15 → C₃</div>
+        </div>
+        <p style="font-size:13px; color:var(--color-text-secondary); margin:0;">So 3 is assigned to C₁.</p>
+      </div>
+      <div style="background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:12px 16px;">
+        <p style="font-size:13px; color:var(--color-text-secondary); margin:0; line-height:1.6;"><i class="ti ti-alert-circle" aria-hidden="true" style="font-size:16px; vertical-align:-2px; margin-right:6px;"></i>If a point is equidistant from two centroids (like 9 is from C₁ and C₂), assign it arbitrarily to either one.</p>
+      </div>`
+  },
+  {
+    title: "K-means walkthrough – step 3 & 4",
+    badge: "Example",
+    badgeColor: "#E1F5EE",
+    badgeText: "#0F6E56",
+    body: `
+      <p style="font-size:15px; color:var(--color-text-primary); line-height:1.7; margin-bottom:1rem;">
+        After assigning all points, recalculate each centroid. Then repeat.
+      </p>
+      <div class="card">
+        <div class="section-label">Step 3 — recalculate centroids (end of iteration 1)</div>
+        <p style="font-size:14px; color:var(--color-text-primary); line-height:1.6; margin:0 0 10px;">Take the mean of all points currently in each cluster:</p>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <div style="background:#EEEDFE; color:#534AB7; border-radius:var(--border-radius-md); padding:10px 16px; font-size:13px;"><strong style="font-weight:500">C₁</strong><br>was 6 → now <strong style="font-weight:500">4.44</strong></div>
+          <div style="background:#E1F5EE; color:#0F6E56; border-radius:var(--border-radius-md); padding:10px 16px; font-size:13px;"><strong style="font-weight:500">C₂</strong><br>was 12 → now <strong style="font-weight:500">10.5</strong></div>
+          <div style="background:#FAEEDA; color:#854F0B; border-radius:var(--border-radius-md); padding:10px 16px; font-size:13px;"><strong style="font-weight:500">C₃</strong><br>was 18 → now <strong style="font-weight:500">22.33</strong></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="section-label">Step 4 — iterate</div>
+        <p style="font-size:14px; color:var(--color-text-primary); line-height:1.6; margin:0;">Go back to step 2 using the new centroids. Reassign all points to their closest centroid, then recompute centroids again. Keep going until <span class="highlight">centroids no longer change</span>. That's convergence.</p>
+      </div>
+      <div style="background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:12px 16px;">
+        <p style="font-size:13px; color:var(--color-text-secondary); margin:0; line-height:1.6;"><i class="ti ti-refresh" aria-hidden="true" style="font-size:16px; vertical-align:-2px; margin-right:6px;"></i>The algorithm always terminates — but it may settle into a <strong style="font-weight:500">local optimum</strong>, not the global best solution.</p>
+      </div>`
+  },
+  {
+    title: "K-means: strengths & weaknesses",
+    badge: "Evaluation",
+    badgeColor: "#FAECE7",
+    badgeText: "#993C1D",
+    body: `
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:1rem;">
+        <div style="background:#E1F5EE; border-radius:var(--border-radius-lg); padding:1rem;">
+          <p style="font-weight:500; font-size:14px; color:#0F6E56; margin:0 0 10px;"><i class="ti ti-circle-check" aria-hidden="true" style="margin-right:6px;"></i>Strengths</p>
+          ${["Relatively efficient — O(N·K·T)", "Always terminates successfully", "Simple to implement and understand"].map(s=>`<p style="font-size:13px; color:#085041; margin:0 0 6px; line-height:1.5;">• ${s}</p>`).join('')}
+        </div>
+        <div style="background:#FCEBEB; border-radius:var(--border-radius-lg); padding:1rem;">
+          <p style="font-weight:500; font-size:14px; color:#A32D2D; margin:0 0 10px;"><i class="ti ti-circle-x" aria-hidden="true" style="margin-right:6px;"></i>Weaknesses</p>
+          ${["Does not guarantee the optimal clustering","Sensitive to initial random centroid choices","Requires K to be specified in advance","Requires a defined mean — won't work for all data types"].map(s=>`<p style="font-size:13px; color:#791F1F; margin:0 0 6px; line-height:1.5;">• ${s}</p>`).join('')}
+        </div>
+      </div>
+      <div style="background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:12px 16px;">
+        <p style="font-size:13px; color:var(--color-text-secondary); margin:0; line-height:1.6;"><i class="ti ti-bulb" aria-hidden="true" style="font-size:16px; vertical-align:-2px; margin-right:6px;"></i>The sensitivity to initial centroids is a big practical issue. A common fix is to run K-means multiple times with different random starts and pick the best result.</p>
+      </div>`
+  },
+  {
+    title: "Agglomerative clustering: the idea",
+    badge: "Hierarchical",
+    badgeColor: "#E6F1FB",
+    badgeText: "#185FA5",
+    body: `
+      <p style="font-size:15px; color:var(--color-text-primary); line-height:1.7; margin-bottom:1rem;">
+        Unlike K-means, agglomerative clustering doesn't need you to specify K upfront. It builds a hierarchy from the bottom up.
+      </p>
+      <div class="card">
+        <div class="section-label">The process</div>
+        ${[
+          ["Start","Treat every data point as its own cluster (N points = N clusters)"],
+          ["Merge","Find the two most similar clusters and merge them into one"],
+          ["Repeat","Keep merging until only one big cluster containing all points remains"],
+          ["Cut","From the resulting tree (dendrogram), cut at any level to get K clusters"],
+        ].map(([label,desc])=>`
+          <div class="algo-step">
+            <span style="min-width:52px; font-size:12px; font-weight:500; background:#E6F1FB; color:#185FA5; border-radius:4px; padding:3px 8px; text-align:center;">${label}</span>
+            <p style="font-size:14px; margin:3px 0 0; color:var(--color-text-primary); line-height:1.5;">${desc}</p>
+          </div>`).join('')}
+      </div>
+      <div style="background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:12px 16px;">
+        <p style="font-size:13px; color:var(--color-text-secondary); margin:0; line-height:1.6;"><i class="ti ti-binary-tree" aria-hidden="true" style="font-size:16px; vertical-align:-2px; margin-right:6px;"></i>The key advantage: you run the algorithm once and can extract any number of clusters from the result — unlike K-means which must be rerun for each different K.</p>
+      </div>`
+  }
+];
+
+let current = 0;
+
+function renderDots() {
+  const d = document.getElementById('dots');
+  d.innerHTML = slides.map((_,i)=>`<span class="step-dot ${i===current?'active':''}"></span>`).join('');
+}
+
+function render() {
+  const s = slides[current];
+  document.getElementById('slide-counter').textContent = `Slide ${current+1} of ${slides.length}`;
+  document.getElementById('prev-btn').disabled = current===0;
+  document.getElementById('next-btn').disabled = current===slides.length-1;
+  renderDots();
+  document.getElementById('slide-content').innerHTML = `
+    <div style="margin-bottom:1.5rem;">
+      <span class="tag" style="background:${s.badgeColor}; color:${s.badgeText};">${s.badge}</span>
+    </div>
+    <h2 style="font-size:22px; font-weight:500; margin:0 0 1.25rem; color:var(--color-text-primary);">${s.title}</h2>
+    ${s.body}
+  `;
+}
+
+function move(dir) { current = Math.max(0, Math.min(slides.length-1, current+dir)); render(); }
+
+render();
+</script>

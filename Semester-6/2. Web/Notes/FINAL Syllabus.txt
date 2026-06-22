@@ -1,0 +1,34 @@
+Next js
+React
+Mongodb
+
+Jwt authorization, tokens, sessions, etc
+
+comparison of nextjs vs react
+scenario given and write code
+code given, snippet missing
+write full codes
+props concept in nextjs (dont mix with react)
+mongodb basic things like insert, delete, find
+read those links shared of nextjs (the blog content)
+
+Paper Hints: 
+- Revise JavaScript browser APIs: localStorage, sessionStorage, fetch, axios, Promises, and JSON methods.
+- Practice React concepts including useState, useEffect, props, JSX, component rendering, and MongoDB queries/operators.
+- Understand Next.js App Router, dynamic routes, use client, layouts, API routes, and navigation using next/link.
+- Prepare Git, JWT, .env, and Vercel deployment basics; focus on understanding concepts and predicting code outputs.
+- Focus on App Router routing, dynamic routes [id], API routes, and Next.js server/client components from the Real Estate CRM examples.
+- Practice MERN stack basics including MongoDB queries, Express routes, Axios requests, React hooks, and form handling.
+- Revise JWT authentication flow, middleware protection, cookies, login APIs, and protected routes in Next.js.
+- Prepare common syntax for fetch, map, find, useState, useEffect, MongoDB operators, and Git/Vercel commands from the lab tasks.
+
+----------------------------------------------------------------------
+
+SYLLABUS BY MAAM ON GCR:
+- Next js
+- Jwt authentication
+- React
+- Mongodb
+Everything taught is included except angularjs
+
+One page cheat sheet is allowed

@@ -1,0 +1,9 @@
+200 OK
+201 Created/Success
+400 Bad Request
+401 Unauthorized (Who are you?)
+403 Forbidden (You aren't allowed in here!)
+404 Not Found
+409 Conflict
+500 Internal Server Error
+
